@@ -7,4 +7,5 @@ contract IlliniBlockchainSP22Token is ERC1155 {
     function uri(uint256) public pure virtual override returns (string memory) {
         
     }
+    
 }
