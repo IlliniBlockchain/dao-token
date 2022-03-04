@@ -3,13 +3,13 @@ pragma solidity ^0.8.6;
 
 import "ds-test/test.sol";
 
-import "./DaoToken.sol";
+import "./IlliniBlockchainSP22Token.sol";
 
-contract DaoTokenTest is DSTest {
-    DaoToken token;
+contract IlliniBlockchainSP22TokenTest is DSTest {
+    IlliniBlockchainSP22Token token;
 
     function setUp() public {
-        token = new DaoToken();
+        token = new IlliniBlockchainSP22Token();
     }
 
     function testFail_basic_sanity() public {
