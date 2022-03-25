@@ -2,10 +2,12 @@
 pragma solidity ^0.8.6;
 
 import "ds-test/test.sol";
+import "./test/Vm.sol";
 
 import "./IlliniBlockchainSP22Token.sol";
 
 contract IlliniBlockchainSP22TokenTest is DSTest {
+    Vm vm = Vm(HEVM_ADDRESS);
     IlliniBlockchainSP22Token token;
 
     function setUp() public {
