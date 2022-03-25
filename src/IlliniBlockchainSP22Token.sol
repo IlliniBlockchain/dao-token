@@ -4,6 +4,7 @@ pragma solidity ^0.8.6;
 import {ERC1155} from "solmate/tokens/ERC1155.sol";
 
 contract IlliniBlockchainSP22Token is ERC1155 {
+
     struct TokenMetadata {
         uint8 year;
         uint8 termId;
