@@ -21,4 +21,12 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
     function test_basic_sanity() public {
         assertTrue(true);
     }
+
+    function test_mint() public {}
+
+    function testFail_mint() public {}
+
+    function test_batch_mint() public {}
+
+    function testFail_batch_mint() public {}
 }
