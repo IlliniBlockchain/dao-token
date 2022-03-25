@@ -9,7 +9,7 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
     IlliniBlockchainSP22Token token;
 
     function setUp() public {
-        token = new IlliniBlockchainSP22Token();
+        token = new IlliniBlockchainSP22Token(address(0x123));
     }
 
     function testFail_basic_sanity() public {
