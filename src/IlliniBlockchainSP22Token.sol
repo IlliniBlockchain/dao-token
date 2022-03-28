@@ -13,7 +13,7 @@ contract IlliniBlockchainSP22Token is ERC1155 {
     mapping(uint256 => TokenMetadata) public tokenMetadata;
     string public name = "IlliniBlockchain";
 
-    constructor(address _owner) public {
+    constructor(address _owner) {
         terms = ["Fall", "Spring"];
         owner = _owner;
     }
@@ -32,6 +32,9 @@ contract IlliniBlockchainSP22Token is ERC1155 {
         _;
     }
 
+    function changeOwner(address _owner) public onlyOwner {
+        owner = _owner;
+    }
 
     function contractURI() public view returns (string memory) {
         string memory image = Base64.encode(
