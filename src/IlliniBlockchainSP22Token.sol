@@ -89,7 +89,7 @@ contract IlliniBlockchainSP22Token is ERC1155 {
                                 " ",
                                 yearStr,
                                 ' Member",',
-                                '"description:"IlliniBlockchain Membership",',
+                                '"description":"IlliniBlockchain Membership",',
                                 '"image": "',
                                 "data:image/svg+xml;base64,",
                                 image,
