@@ -11,6 +11,7 @@ contract IlliniBlockchainSP22Token is ERC1155 {
     string[] internal terms;
     address owner;
     mapping(uint256 => TokenMetadata) public tokenMetadata;
+    string public name = "IlliniBlockchain";
 
     constructor(address _owner) public {
         terms = ["Fall", "Spring"];
@@ -28,6 +29,32 @@ contract IlliniBlockchainSP22Token is ERC1155 {
     modifier onlyOwner() {
         // TODO: Change address
         require(msg.sender == owner, "This address is not allowed to mint");
+
+    function contractURI() public view returns (string memory) {
+        string memory image = Base64.encode(
+            bytes(abi.encodePacked(NFTSVG.baseSVG, "</svg>"))
+        );
+        return
+            string(
+                abi.encodePacked(
+                    "data:application/json;base64,",
+                    Base64.encode(
+                        bytes(
+                            abi.encodePacked(
+                                '{"name":"',
+                                name,
+                                '",',
+                                '"description:"Student organization at the University of Illinois at Urbana-Champaign.",',
+                                '"external_link": "https://illiniblockchain.com/",',
+                                '"image": "',
+                                "data:image/svg+xml;base64,",
+                                image,
+                                '"}'
+                            )
+                        )
+                    )
+                )
+            );
     }
 
     function uri(uint256 _tokenId)
