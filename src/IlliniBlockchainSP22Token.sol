@@ -47,7 +47,7 @@ contract IlliniBlockchainSP22Token is ERC1155 {
                                 '{"name":"',
                                 name,
                                 '",',
-                                '"description:"Student organization at the University of Illinois at Urbana-Champaign.",',
+                                '"description":"Student organization at the University of Illinois at Urbana-Champaign.",',
                                 '"external_link": "https://illiniblockchain.com/",',
                                 '"image": "',
                                 "data:image/svg+xml;base64,",
