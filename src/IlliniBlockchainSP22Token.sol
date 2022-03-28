@@ -30,13 +30,46 @@ contract IlliniBlockchainSP22Token is ERC1155 {
         require(msg.sender == owner, "This address is not allowed to mint");
     }
 
-    function uri(uint256)
+    function uri(uint256 _tokenId)
         public
-        pure
+        view
         virtual
         override
         returns (string memory)
-    {}
+    {
+        TokenMetadata memory meta = tokenMetadata[_tokenId];
+        string memory yearStr = meta.year.toString();
+        string memory termStr = terms[meta.termId];
+        string memory image = Base64.encode(
+            bytes(
+                NFTSVG.generateSVG(
+                    NFTSVG.SVGParams({year: yearStr, term: termStr})
+                )
+            )
+        );
+        return
+            string(
+                abi.encodePacked(
+                    "data:application/json;base64,",
+                    Base64.encode(
+                        bytes(
+                            abi.encodePacked(
+                                '{"name":"IlliniBlockchain ',
+                                termStr,
+                                " ",
+                                yearStr,
+                                ' Member",',
+                                '"description:"IlliniBlockchain Membership",',
+                                '"image": "',
+                                "data:image/svg+xml;base64,",
+                                image,
+                                '"}'
+                            )
+                        )
+                    )
+                )
+            );
+    }
 
     function mint(
         address _to,
