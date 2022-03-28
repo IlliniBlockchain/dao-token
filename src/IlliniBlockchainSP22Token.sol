@@ -2,12 +2,18 @@
 pragma solidity ^0.8.6;
 
 import {ERC1155} from "solmate/tokens/ERC1155.sol";
+import {NFTSVG} from "./libraries/NFTSVG.sol";
+import "openzeppelin-contracts/contracts/utils/Base64.sol";
+import "openzeppelin-contracts/contracts/utils/Strings.sol";
 
 contract IlliniBlockchainSP22Token is ERC1155 {
+    using Strings for uint16;
+
     struct TokenMetadata {
-        uint8 year;
+        uint16 year;
         uint8 termId;
     }
+
     string[] internal terms;
     address owner;
     mapping(uint256 => TokenMetadata) public tokenMetadata;
