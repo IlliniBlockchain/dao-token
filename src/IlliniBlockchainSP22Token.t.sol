@@ -23,19 +23,16 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
         assertTrue(true);
     }
 
+
     function test_mint() public {
         uint256 id = 1;
         uint256 amount = 100;
         bytes memory data = bytes("");
-        IlliniBlockchainSP22Token.TokenMetadata memory meta = IlliniBlockchainSP22Token
-            .TokenMetadata({
-                year: 2022,
-                termId: 1 // Spring
-            });
-        vm.prank(owner);
-        token.mint(owner, id, amount, meta, data);
+        vm.startPrank(owner);
+        token.mint(owner, id, amount, data);
 
         assertEq(token.balanceOf(owner, id), amount);
+    }
 
         (uint16 year, uint8 termId) = token.tokenMetadata(id);
         assertEq(year, meta.year);
@@ -53,13 +50,11 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
         uint256 id = 1;
         uint256 amount = 100;
         bytes memory data = bytes("");
-        IlliniBlockchainSP22Token.TokenMetadata memory meta = IlliniBlockchainSP22Token
-            .TokenMetadata({
-                year: 2022,
-                termId: 1 // Spring
-            });
-        vm.prank(owner);
-        token.mint(owner, id, amount, meta, data);
+        uint16 year = 2022;
+        uint8 termId = 1; // Spring
+        vm.startPrank(owner);
+        token.mint(owner, id, amount, data);
+        token.setTokenMetadata(id, year, termId);
 
         assertEq(
             token.uri(id),
