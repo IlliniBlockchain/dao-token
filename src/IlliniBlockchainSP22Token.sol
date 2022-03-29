@@ -25,7 +25,7 @@ contract IlliniBlockchainSP22Token is ERC1155 {
     }
 
     modifier onlyOwner() {
-        require(msg.sender == owner, "This address is not allowed to mint");
+        require(msg.sender == owner, "Caller is not the owner");
         _;
     }
 
