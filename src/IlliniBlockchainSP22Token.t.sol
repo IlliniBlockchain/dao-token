@@ -23,6 +23,45 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
         assertTrue(true);
     }
 
+    function test_setTokenMetadata() public {
+        uint256 tokenId = 1;
+        uint16 year = 2022;
+        uint8 termId = 1;
+        vm.startPrank(owner);
+        token.setTokenMetadata(tokenId, year, termId);
+
+        (uint16 myear, uint8 mtermId) = token.tokenMetadata(tokenId);
+        assertEq(year, myear);
+        assertEq(termId, mtermId);
+    }
+
+    function testFail_setTokenMetadata_owner() public {
+        // setTokenMetadata should only be called by owner
+        uint256 tokenId = 1;
+        uint16 year = 2022;
+        uint8 termId = 1;
+        vm.startPrank(address(0x2022));
+        token.setTokenMetadata(tokenId, year, termId);
+    }
+
+    function testFail_setTokenMetadata_twice() public {
+        // setTokenMetadata should only be called once per tokenId
+        uint256 tokenId = 1;
+        uint16 year = 2022;
+        uint8 termId = 1;
+        vm.startPrank(owner);
+        token.setTokenMetadata(tokenId, year, termId);
+        token.setTokenMetadata(tokenId, year, termId);
+    }
+
+    function testFail_setTokenMetadata_termId() public {
+        // termId must be less than 2 (Fall and Spring)
+        uint256 tokenId = 1;
+        uint16 year = 2022;
+        uint8 termId = 3; // 3 is invalid
+        vm.startPrank(owner);
+        token.setTokenMetadata(tokenId, year, termId);
+    }
 
     function test_mint() public {
         uint256 id = 1;
