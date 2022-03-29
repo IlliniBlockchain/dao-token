@@ -34,9 +34,13 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
         assertEq(token.balanceOf(owner, id), amount);
     }
 
-        (uint16 year, uint8 termId) = token.tokenMetadata(id);
-        assertEq(year, meta.year);
-        assertEq(termId, meta.termId);
+    function testFail_mint_owner() public {
+        // mint should only be called by owner
+        uint256 id = 1;
+        uint256 amount = 100;
+        bytes memory data = bytes("");
+        vm.startPrank(address(0x2022));
+        token.mint(owner, id, amount, data);
     }
 
     function test_contractURI() public {
