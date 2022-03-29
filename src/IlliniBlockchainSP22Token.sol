@@ -101,14 +101,25 @@ contract IlliniBlockchainSP22Token is ERC1155 {
             );
     }
 
+    function setTokenMetadata(
+        uint256 _tokenId,
+        uint16 _year,
+        uint8 _termId
+    ) public onlyOwner {
+        require(_termId < terms.length, "Invalid term");
+        require(
+            tokenMetadata[_tokenId].year == 0,
+            "Token already has metadata"
+        );
+        tokenMetadata[_tokenId] = TokenMetadata({year: _year, termId: _termId});
+    }
+
     function mint(
         address _to,
         uint256 _id,
         uint256 _amount,
-        TokenMetadata calldata _metadata,
         bytes memory _data
     ) public onlyOwner {
-        tokenMetadata[_id] = _metadata;
         _mint(_to, _id, _amount, _data);
     }
 }
