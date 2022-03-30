@@ -19,6 +19,9 @@ contract IlliniBlockchainSP22Token is ERC1155 {
     mapping(uint256 => TokenMetadata) public tokenMetadata;
     string public name = "IlliniBlockchain";
 
+    // A nonce to ensure we have a unique id each time we mint.
+    uint256 public nonce;
+
     constructor(address _owner) {
         terms = ["Fall", "Spring"];
         owner = _owner;
@@ -101,17 +104,23 @@ contract IlliniBlockchainSP22Token is ERC1155 {
             );
     }
 
-    function setTokenMetadata(
-        uint256 _tokenId,
-        uint16 _year,
-        uint8 _termId
-    ) public onlyOwner {
-        require(_termId < terms.length, "Invalid term");
-        require(
-            tokenMetadata[_tokenId].year == 0,
-            "Token already has metadata"
-        );
-        tokenMetadata[_tokenId] = TokenMetadata({year: _year, termId: _termId});
+    function setTokenMetadata(uint256 _id, TokenMetadata calldata _metadata)
+        public
+        onlyOwner
+    {
+        require(_metadata.termId < terms.length, "Invalid term");
+        require(tokenMetadata[_id].year == 0, "Token already has metadata");
+        tokenMetadata[_id] = _metadata;
+    }
+
+    // Initializes a new token type from metadata.
+    function init(TokenMetadata calldata _metadata)
+        public
+        onlyOwner
+        returns (uint256 _id)
+    {
+        setTokenMetadata(nonce + 1, _metadata);
+        _id = ++nonce;
     }
 
     function mint(
