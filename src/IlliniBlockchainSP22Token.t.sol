@@ -12,7 +12,8 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
     address owner = address(0x01);
 
     function setUp() public {
-        token = new IlliniBlockchainSP22Token(owner);
+        vm.startPrank(owner);
+        token = new IlliniBlockchainSP22Token();
     }
 
     function testFail_basic_sanity() public {
