@@ -75,8 +75,26 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
         token.setTokenMetadata(tokenId, meta);
     }
 
+    function test_init() public {
+        uint256 tokenId = 1;
+        IlliniBlockchainSP22Token.TokenMetadata
+            memory meta = IlliniBlockchainSP22Token.TokenMetadata({
+                year: 2022,
+                termId: 1
+            });
         vm.startPrank(owner);
-        token.setTokenMetadata(tokenId, year, termId);
+        uint256 id = token.init(meta);
+        assertEq(id, tokenId);
+    }
+
+    function testFail_init_owner() public {
+        IlliniBlockchainSP22Token.TokenMetadata
+            memory meta = IlliniBlockchainSP22Token.TokenMetadata({
+                year: 2022,
+                termId: 1
+            });
+        vm.startPrank(address(0x2022));
+        token.init(meta);
     }
 
     function test_mint() public {
