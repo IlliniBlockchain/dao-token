@@ -15,6 +15,11 @@ contract IlliniBlockchainGovernor is Governor, GovernorSettings, GovernorCountin
         GovernorVotesQuorumFraction(67)
     {}
 
+    /* NOTE:
+    - include variable vote time in proposal
+    - implement voting with our token
+    */
+
     // The following functions are overrides required by Solidity.
 
     function votingDelay()
