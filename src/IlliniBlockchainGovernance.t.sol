@@ -6,10 +6,11 @@ import "ds-test/test.sol";
 import "./IlliniBlockchainGovernance.sol";
 
 contract IlliniBlockchainGovernanceTest is DSTest {
-    IlliniBlockchainGovernance gov;
+    IlliniBlockchainGovernor gov;
 
     function setUp() public {
-        gov = new IlliniBlockchainGovernance();
+        // TODO: need IVotes token for governance constructor
+        // gov = new IlliniBlockchainGovernor();
     }
 
     function testFail_basic_sanity() public {

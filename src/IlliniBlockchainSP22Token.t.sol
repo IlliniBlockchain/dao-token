@@ -2,7 +2,7 @@
 pragma solidity ^0.8.6;
 
 import "ds-test/test.sol";
-import "./test/Vm.sol";
+// import "./test/Vm.sol";
 
 import "./IlliniBlockchainSP22Token.sol";
 import "./Vm.sol";
