@@ -5,7 +5,6 @@ import "ds-test/test.sol";
 import "./test/Vm.sol";
 
 import "./IlliniBlockchainSP22Token.sol";
-// import "./Vm.sol";
 
 contract IlliniBlockchainSP22TokenTest is DSTest {
     Vm vm = Vm(HEVM_ADDRESS);
