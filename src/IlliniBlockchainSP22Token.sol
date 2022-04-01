@@ -122,4 +122,24 @@ contract IlliniBlockchainSP22Token is ERC1155 {
     ) public onlyOwner {
         _mint(_to, _id, _amount, _data);
     }
+
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 id,
+        uint256 amount,
+        bytes memory data
+    ) public virtual override {
+        revert();
+    }
+
+    function safeBatchTransferFrom(
+        address from,
+        address to,
+        uint256[] memory ids,
+        uint256[] memory amounts,
+        bytes memory data
+    ) public virtual override {
+        revert();
+    }
 }

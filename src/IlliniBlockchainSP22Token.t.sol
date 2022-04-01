@@ -10,6 +10,7 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
     Vm vm = Vm(HEVM_ADDRESS);
     IlliniBlockchainSP22Token token;
     address owner = address(0x01);
+    bytes errorMsg = "";
 
     function setUp() public {
         token = new IlliniBlockchainSP22Token(owner);
@@ -23,6 +24,52 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
         assertTrue(true);
     }
 
+    function test_no_transfer() public {
+
+        // example addresses
+        address addr1 = address(0x1234);
+        address addr2 = address(0x5678);
+
+        // mint some new tokens to one address
+        // NOTICE: _mint is an internal function, come back
+        // to this later when minting is available
+        address to = addr1;
+        uint256[] memory ids = new uint256[](2);
+        ids[0] = 8;
+        ids[1] = 5;
+        uint256[] memory amounts = new uint256[](2);
+        amounts[0] = 3;
+        amounts[1] = 4;
+        bytes memory data = "203948321";
+        // token._mint(to, id, amount, data);
+
+        // get balances
+        uint256 bal1Before = token.balanceOf(addr1, ids[0]);
+        uint256 bal2Before = token.balanceOf(addr2, ids[0]);
+        uint256 tk2bal1Before = token.balanceOf(addr1, ids[1]);
+        uint256 tk2bal2Before = token.balanceOf(addr2, ids[1]);
+
+        // try to transfer to another address
+        vm.prank(addr1);
+        vm.expectRevert(errorMsg);
+        token.safeTransferFrom(addr1, addr2, ids[0], amounts[0], data);
+        vm.expectRevert(errorMsg);
+        token.safeBatchTransferFrom(addr1, addr2, ids, amounts, data);
+
+        // check token 1 balances
+        uint256 bal1After = token.balanceOf(addr1, ids[0]);
+        uint256 bal2After = token.balanceOf(addr2, ids[0]);
+        assertEq(bal1Before, bal1After, "addr1 token 1 balance changed");
+        assertEq(bal2Before, bal2After, "addr2 token 1 balance changed");
+
+        // check token 2 balances
+        uint256 tk2bal1After = token.balanceOf(addr1, ids[1]);
+        uint256 tk2bal2After = token.balanceOf(addr2, ids[1]);
+        assertEq(tk2bal1Before, tk2bal1After, "addr1 token 2 balance changed");
+        assertEq(tk2bal2Before, tk2bal2After, "addr2 token 2 balance changed");
+
+    }
+    
     function test_setTokenMetadata() public {
         uint256 tokenId = 1;
         uint16 year = 2022;
