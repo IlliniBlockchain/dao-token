@@ -2,15 +2,16 @@
 pragma solidity ^0.8.6;
 
 import "ds-test/test.sol";
-// import "./test/Vm.sol";
+import "./test/Vm.sol";
 
 import "./IlliniBlockchainSP22Token.sol";
-import "./Vm.sol";
+// import "./Vm.sol";
 
 contract IlliniBlockchainSP22TokenTest is DSTest {
     Vm vm = Vm(HEVM_ADDRESS);
     IlliniBlockchainSP22Token token;
     address owner = address(0x01);
+    bytes errorMsg = "";
 
     function setUp() public {
         token = new IlliniBlockchainSP22Token(owner);
@@ -40,7 +41,7 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
         uint256[] memory amounts = new uint256[](2);
         amounts[0] = 3;
         amounts[1] = 4;
-        bytes memory data = "";
+        bytes memory data = "203948321";
         // token._mint(to, id, amount, data);
 
         // get balances
@@ -51,9 +52,9 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
 
         // try to transfer to another address
         vm.prank(addr1);
-        vm.expectRevert("");
+        vm.expectRevert(errorMsg);
         token.safeTransferFrom(addr1, addr2, ids[0], amounts[0], data);
-        vm.expectRevert("");
+        vm.expectRevert(errorMsg);
         token.safeBatchTransferFrom(addr1, addr2, ids, amounts, data);
 
         // check token 1 balances
