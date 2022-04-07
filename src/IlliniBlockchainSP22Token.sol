@@ -3,9 +3,9 @@ pragma solidity ^0.8.6;
 
 import {ERC1155} from "solmate/tokens/ERC1155.sol";
 import {NFTSVG} from "./libraries/NFTSVG.sol";
-import {Ownable} from "openzeppelin-contracts/contracts/access/Ownable.sol";
-import "openzeppelin-contracts/contracts/utils/Base64.sol";
-import "openzeppelin-contracts/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/utils/Base64.sol";
+import "@openzeppelin/contracts/utils/Strings.sol";
+import "@openzeppelin/contracts/governance/utils/Votes.sol";
 
 contract IlliniBlockchainSP22Token is ERC1155, Ownable {
     using Strings for uint16;
