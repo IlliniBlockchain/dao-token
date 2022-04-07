@@ -19,6 +19,9 @@ contract IlliniBlockchainSP22Token is ERC1155, Ownable {
     mapping(uint256 => TokenMetadata) public tokenMetadata;
     string public name = "IlliniBlockchain";
 
+    // A nonce to ensure we have a unique id each time we mint.
+    uint256 public nonce = 0;
+
     constructor() {
         terms = ["Fall", "Spring"];
     }
