@@ -119,8 +119,8 @@ contract IlliniBlockchainSP22Token is ERC1155 {
         onlyOwner
         returns (uint256 _id)
     {
-        setTokenMetadata(nonce + 1, _metadata);
-        _id = ++nonce;
+        setTokenMetadata(++nonce, _metadata);
+        _id = nonce;
     }
 
     function mint(
