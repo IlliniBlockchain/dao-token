@@ -12,12 +12,16 @@ contract IlliniBlockchainSP22Token is ERC1155 {
     struct TokenMetadata {
         uint16 year;
         uint8 termId;
+        uint256 roleId;
     }
 
     string[] internal terms;
     address owner;
     mapping(uint256 => TokenMetadata) public tokenMetadata;
     string public name = "IlliniBlockchain";
+
+    mapping(uint256 => string) public roles;
+    uint256 public rolesNonce;
 
     constructor(address _owner) {
         terms = ["Fall", "Spring"];
@@ -99,6 +103,12 @@ contract IlliniBlockchainSP22Token is ERC1155 {
                     )
                 )
             );
+    }
+
+    // Creates a new role with the given name.
+    function createRole(string _name) public onlyOwner returns (uint256 _id) {
+        _id = ++rolesNonce;
+        roles[_id] = _name;
     }
 
     function setTokenMetadata(
