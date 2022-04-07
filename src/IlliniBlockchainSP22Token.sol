@@ -3,10 +3,11 @@ pragma solidity ^0.8.6;
 
 import {ERC1155} from "solmate/tokens/ERC1155.sol";
 import {NFTSVG} from "./libraries/NFTSVG.sol";
+import {Ownable} from "openzeppelin-contracts/contracts/access/Ownable.sol";
 import "openzeppelin-contracts/contracts/utils/Base64.sol";
 import "openzeppelin-contracts/contracts/utils/Strings.sol";
 
-contract IlliniBlockchainSP22Token is ERC1155 {
+contract IlliniBlockchainSP22Token is ERC1155, Ownable {
     using Strings for uint16;
 
     struct TokenMetadata {
@@ -15,22 +16,11 @@ contract IlliniBlockchainSP22Token is ERC1155 {
     }
 
     string[] internal terms;
-    address owner;
     mapping(uint256 => TokenMetadata) public tokenMetadata;
     string public name = "IlliniBlockchain";
 
-    constructor(address _owner) {
+    constructor() {
         terms = ["Fall", "Spring"];
-        owner = _owner;
-    }
-
-    modifier onlyOwner() {
-        require(msg.sender == owner, "Caller is not the owner");
-        _;
-    }
-
-    function changeOwner(address _owner) public onlyOwner {
-        owner = _owner;
     }
 
     function contractURI() public view returns (string memory) {
