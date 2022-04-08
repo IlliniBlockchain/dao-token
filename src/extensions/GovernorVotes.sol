@@ -3,7 +3,7 @@
 
 pragma solidity ^0.8.0;
 
-import "./Governor.sol";
+import "../Governor.sol";
 import "openzeppelin-contracts/contracts/governance/utils/IVotes.sol";
 
 /**

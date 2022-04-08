@@ -3,7 +3,7 @@ pragma solidity ^0.8.6;
 
 import "ds-test/test.sol";
 
-import "./IlliniBlockchainGovernor.sol";
+import "../IlliniBlockchainGovernor.sol";
 
 contract IlliniBlockchainGovernorTest is DSTest {
     IlliniBlockchainGovernor gov;

@@ -2,10 +2,10 @@
 pragma solidity ^0.8.4;
 
 import "./Governor.sol";
-import "./GovernorSettings.sol";
-import "./GovernorCountingSimple.sol";
-import "./GovernorVotes.sol";
-import "./GovernorVotesQuorumFraction.sol";
+import "./extensions/GovernorSettings.sol";
+import "./extensions/GovernorCountingSimple.sol";
+import "./extensions/GovernorVotes.sol";
+import "./extensions/GovernorVotesQuorumFraction.sol";
 
 contract IlliniBlockchainGovernor is Governor, GovernorSettings, GovernorCountingSimple, GovernorVotes, GovernorVotesQuorumFraction {
     constructor(IVotes _token)

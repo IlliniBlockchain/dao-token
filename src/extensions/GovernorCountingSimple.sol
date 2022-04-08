@@ -3,7 +3,7 @@
 
 pragma solidity ^0.8.0;
 
-import "./Governor.sol";
+import "../Governor.sol";
 
 /**
  * @dev Extension of {Governor} for simple, 3 options, vote counting.
