@@ -2,13 +2,14 @@
 pragma solidity ^0.8.6;
 
 import {ERC1155} from "solmate/tokens/ERC1155.sol";
+import {ERC1155Votes} from "./extensions/ERC1155Votes.sol";
 import {NFTSVG} from "./libraries/NFTSVG.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeCast.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract IlliniBlockchainSP22Token is ERC1155, Ownable {
+contract IlliniBlockchainSP22Token is ERC1155, Ownable, ERC1155Votes {
     using Strings for uint16;
 
     struct TokenMetadata {
@@ -107,7 +108,8 @@ contract IlliniBlockchainSP22Token is ERC1155, Ownable {
     function totalSupply(uint256 id)
         public
         view
-        onlyOwner
+        virtual
+        override
         returns (uint256)
     {
         return tokenMetadata[id].totalSupply;
