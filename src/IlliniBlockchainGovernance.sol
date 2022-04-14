@@ -16,14 +16,14 @@ contract IlliniBlockchainGovernor is
     GovernorVotes,
     GovernorVotesQuorumFraction
 {
-    constructor(IVotes _token)
+    constructor(IVotes _token, uint256 _tokenID)
         Governor("IlliniBlockchainGovernor")
         GovernorSettings(
             0, /* 0 block */
             45818, /* 1 week */
             0
         )
-        GovernorVotes(_token)
+        GovernorVotes(_token, _tokenID)
         GovernorVotesQuorumFraction(67)
     {}
 
