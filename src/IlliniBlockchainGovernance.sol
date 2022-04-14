@@ -6,6 +6,7 @@ import "@openzeppelin/contracts/governance/extensions/GovernorSettings.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol";
+import {FxBaseChildTunnel} from "contracts/contracts/tunnel/FxBaseChildTunnel.sol";
 
 contract IlliniBlockchainGovernor is Governor, GovernorSettings, GovernorCountingSimple, GovernorVotes, GovernorVotesQuorumFraction {
     constructor(IVotes _token)
