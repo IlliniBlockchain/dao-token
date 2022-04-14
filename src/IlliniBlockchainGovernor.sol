@@ -6,10 +6,7 @@ import "./extensions/GovernorSettings.sol";
 import "./extensions/GovernorCountingSimple.sol";
 import "./extensions/GovernorVotes.sol";
 import "./extensions/GovernorVotesQuorumFraction.sol";
-
-import "@openzeppelin/contracts/governance/Governor.sol";
-import "@openzeppelin/contracts/governance/extensions/GovernorSettings.sol";
-import "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol";
+import "./utils/IVotes.sol";
 
 contract IlliniBlockchainGovernor is
     Governor,
