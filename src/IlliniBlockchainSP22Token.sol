@@ -2,17 +2,25 @@
 pragma solidity ^0.8.6;
 
 import {ERC1155} from "solmate/tokens/ERC1155.sol";
+import {ERC1155Votes} from "./extensions/ERC1155Votes.sol";
 import {NFTSVG} from "./libraries/NFTSVG.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
+import "@openzeppelin/contracts/utils/math/SafeCast.sol";
 import "@openzeppelin/contracts/utils/Base64.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract IlliniBlockchainSP22Token is ERC1155, Ownable {
+contract IlliniBlockchainSP22Token is ERC1155, Ownable, ERC1155Votes {
     using Strings for uint16;
 
     struct TokenMetadata {
         uint16 year;
-        uint8 termId;
+        uint16 termId;
+        uint224 totalSupply;
+    }
+
+    struct TokenMetadataParams {
+        uint16 year;
+        uint16 termId;
     }
 
     string[] internal terms;
@@ -94,17 +102,45 @@ contract IlliniBlockchainSP22Token is ERC1155, Ownable {
             );
     }
 
-    function setTokenMetadata(uint256 _id, TokenMetadata calldata _metadata)
+    /**
+     * @dev Total amount of tokens in with a given id.
+     */
+    function totalSupply(uint256 id)
         public
-        onlyOwner
+        view
+        virtual
+        override
+        returns (uint256)
     {
-        require(_metadata.termId < terms.length, "Invalid term");
-        require(tokenMetadata[_id].year == 0, "Token already has metadata");
-        tokenMetadata[_id] = _metadata;
+        return tokenMetadata[id].totalSupply;
     }
 
-    // Initializes a new token type from metadata.
-    function init(TokenMetadata calldata _metadata)
+    /**
+     * @dev Indicates whether any token exist with a given id, or not.
+     */
+    function exists(uint256 id) public view returns (bool) {
+        return IlliniBlockchainSP22Token.totalSupply(id) > 0;
+    }
+
+    /**
+     * @dev Sets metadata for token with given id only once.
+     *
+     * Can only be called once for a given id.
+     */
+    function setTokenMetadata(
+        uint256 _id,
+        TokenMetadataParams calldata _metadata
+    ) public onlyOwner {
+        require(_metadata.termId < terms.length, "Invalid term");
+        require(tokenMetadata[_id].year == 0, "Token already has metadata");
+        tokenMetadata[_id].year = _metadata.year;
+        tokenMetadata[_id].termId = _metadata.termId;
+    }
+
+    /**
+     * @dev Initializes a new token type from metadata.
+     */
+    function init(TokenMetadataParams calldata _metadata)
         public
         onlyOwner
         returns (uint256 _id)
@@ -120,6 +156,7 @@ contract IlliniBlockchainSP22Token is ERC1155, Ownable {
         bytes memory _data
     ) public onlyOwner {
         _mint(_to, _id, _amount, _data);
+        tokenMetadata[_id].totalSupply += SafeCast.toUint224(_amount);
     }
 
     function safeTransferFrom(
