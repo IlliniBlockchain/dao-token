@@ -8,10 +8,20 @@ import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol";
 import {FxBaseChildTunnel} from "contracts/contracts/tunnel/FxBaseChildTunnel.sol";
 
-contract IlliniBlockchainGovernor is Governor, GovernorSettings, GovernorCountingSimple, GovernorVotes, GovernorVotesQuorumFraction {
+contract IlliniBlockchainGovernor is
+    Governor,
+    GovernorSettings,
+    GovernorCountingSimple,
+    GovernorVotes,
+    GovernorVotesQuorumFraction
+{
     constructor(IVotes _token)
         Governor("IlliniBlockchainGovernor")
-        GovernorSettings(0 /* 0 block */, 45818 /* 1 week */, 0)
+        GovernorSettings(
+            0, /* 0 block */
+            45818, /* 1 week */
+            0
+        )
         GovernorVotes(_token)
         GovernorVotesQuorumFraction(67)
     {}
@@ -66,5 +76,25 @@ contract IlliniBlockchainGovernor is Governor, GovernorSettings, GovernorCountin
         returns (uint256)
     {
         return super.proposalThreshold();
+    }
+
+    uint256 public latestStateId;
+    address public latestRootMessageSender;
+    bytes public latestData;
+
+    constructor(address _fxChild) FxBaseChildTunnel(_fxChild) {}
+
+    function _processMessageFromRoot(
+        uint256 stateId,
+        address sender,
+        bytes memory data
+    ) internal override validateSender(sender) {
+        latestStateId = stateId;
+        latestRootMessageSender = sender;
+        latestData = data;
+    }
+
+    function sendMessageToRoot(bytes memory message) public {
+        _sendMessageToRoot(message);
     }
 }

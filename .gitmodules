@@ -8,5 +8,5 @@
 	path = lib/openzeppelin-contracts
 	url = https://github.com/OpenZeppelin/openzeppelin-contracts
 [submodule "lib/statesync"]
-	path = lib/statesync
+	path = lib/contracts
 	url = https://github.com/fx-portal/contracts
