@@ -38,4 +38,12 @@ contract IlliniBlockchainGovernorTest is DSTest {
     function test_basic_sanity() public {
         assertTrue(true);
     }
+
+    function test_getVotes() public {
+        vm.startPrank(owner);
+        uint256 amount = 1;
+        token.mint(tokenOwners[0], tokenID, amount, bytes(""));
+
+        assertEq(amount, gov.getVotes(tokenOwners[0], block.number));
+    }
 }
