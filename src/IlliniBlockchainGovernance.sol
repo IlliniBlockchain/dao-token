@@ -76,6 +76,7 @@ contract IlliniBlockchainGovernor is
         override(Governor, GovernorSettings)
         returns (uint256)
     {
+
         return super.proposalThreshold();
     }
 }
