@@ -26,7 +26,6 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
     }
 
     function test_no_transfer() public {
-
         // example addresses
         address addr1 = address(0x1234);
         address addr2 = address(0x5678);
@@ -42,7 +41,8 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
         amounts[0] = 3;
         amounts[1] = 4;
         bytes memory data = "203948321";
-        // token._mint(to, id, amount, data);
+        vm.prank(owner);
+        token.mint(to, ids[0], amounts[0], data);
 
         // get balances
         uint256 bal1Before = token.balanceOf(addr1, ids[0]);
@@ -68,29 +68,86 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
         uint256 tk2bal2After = token.balanceOf(addr2, ids[1]);
         assertEq(tk2bal1Before, tk2bal1After, "addr1 token 2 balance changed");
         assertEq(tk2bal2Before, tk2bal2After, "addr2 token 2 balance changed");
-
     }
-    
+
+    function test_tokenSupply() public {
+        uint256 tokenId = 1;
+        IlliniBlockchainSP22Token.TokenMetadataParams
+            memory meta = IlliniBlockchainSP22Token.TokenMetadataParams({
+                year: 2022,
+                termId: 1
+            });
+
+        // Token does not exist yet.
+        assertEq(0, token.totalSupply(tokenId), "total supply not 0");
+
+        // Mint token.
+        vm.startPrank(owner);
+        token.mint(owner, tokenId, 100, bytes(""));
+
+        // Token exists now.
+        assertEq(100, token.totalSupply(tokenId), "total supply not 100");
+
+        // Set metadata.
+        token.setTokenMetadata(tokenId, meta);
+        // Token supply should not change.
+        assertEq(
+            100,
+            token.totalSupply(tokenId),
+            "total supply changed after setting metadata"
+        );
+    }
+
+    function test_exists() public {
+        uint256 tokenId = 1;
+        IlliniBlockchainSP22Token.TokenMetadataParams
+            memory meta = IlliniBlockchainSP22Token.TokenMetadataParams({
+                year: 2022,
+                termId: 1
+            });
+
+        // Token does not exist yet.
+        assertTrue(!token.exists(tokenId), "total should not exist");
+
+        // Mint token.
+        vm.startPrank(owner);
+        token.mint(owner, tokenId, 100, bytes(""));
+
+        // Token exists now.
+        assertTrue(token.exists(tokenId), "total should exist");
+
+        // Set metadata.
+        token.setTokenMetadata(tokenId, meta);
+        // Token supply should not change.
+        assertTrue(
+            token.exists(tokenId),
+            "total should still exist after setting metadata"
+        );
+    }
+
     function test_setTokenMetadata() public {
         uint256 tokenId = 1;
-        IlliniBlockchainSP22Token.TokenMetadata
-            memory meta = IlliniBlockchainSP22Token.TokenMetadata({
+        IlliniBlockchainSP22Token.TokenMetadataParams
+            memory meta = IlliniBlockchainSP22Token.TokenMetadataParams({
                 year: 2022,
                 termId: 1
             });
         vm.startPrank(owner);
         token.setTokenMetadata(tokenId, meta);
 
-        (uint16 year, uint8 termId) = token.tokenMetadata(tokenId);
+        (uint16 year, uint16 termId, uint224 totalSupply) = token.tokenMetadata(
+            tokenId
+        );
         assertEq(meta.year, year);
         assertEq(meta.termId, termId);
+        assertEq(0, totalSupply);
     }
 
     function testFail_setTokenMetadata_owner() public {
         // setTokenMetadata should only be called by owner
         uint256 tokenId = 1;
-        IlliniBlockchainSP22Token.TokenMetadata
-            memory meta = IlliniBlockchainSP22Token.TokenMetadata({
+        IlliniBlockchainSP22Token.TokenMetadataParams
+            memory meta = IlliniBlockchainSP22Token.TokenMetadataParams({
                 year: 2022,
                 termId: 1
             });
@@ -101,8 +158,8 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
     function testFail_setTokenMetadata_twice() public {
         // setTokenMetadata should only be called once per tokenId
         uint256 tokenId = 1;
-        IlliniBlockchainSP22Token.TokenMetadata
-            memory meta = IlliniBlockchainSP22Token.TokenMetadata({
+        IlliniBlockchainSP22Token.TokenMetadataParams
+            memory meta = IlliniBlockchainSP22Token.TokenMetadataParams({
                 year: 2022,
                 termId: 1
             });
@@ -114,8 +171,8 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
     function testFail_setTokenMetadata_termId() public {
         // termId must be less than 2 (Fall and Spring)
         uint256 tokenId = 1;
-        IlliniBlockchainSP22Token.TokenMetadata memory meta = IlliniBlockchainSP22Token
-            .TokenMetadata({
+        IlliniBlockchainSP22Token.TokenMetadataParams memory meta = IlliniBlockchainSP22Token
+            .TokenMetadataParams({
                 year: 2022,
                 termId: 2 // 2 is invalid
             });
@@ -125,8 +182,8 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
 
     function test_init() public {
         uint256 tokenId = 1;
-        IlliniBlockchainSP22Token.TokenMetadata
-            memory meta = IlliniBlockchainSP22Token.TokenMetadata({
+        IlliniBlockchainSP22Token.TokenMetadataParams
+            memory meta = IlliniBlockchainSP22Token.TokenMetadataParams({
                 year: 2022,
                 termId: 1
             });
@@ -136,8 +193,8 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
     }
 
     function testFail_init_owner() public {
-        IlliniBlockchainSP22Token.TokenMetadata
-            memory meta = IlliniBlockchainSP22Token.TokenMetadata({
+        IlliniBlockchainSP22Token.TokenMetadataParams
+            memory meta = IlliniBlockchainSP22Token.TokenMetadataParams({
                 year: 2022,
                 termId: 1
             });
@@ -175,8 +232,8 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
         uint256 id = 1;
         uint256 amount = 100;
         bytes memory data = bytes("");
-        IlliniBlockchainSP22Token.TokenMetadata memory meta = IlliniBlockchainSP22Token
-            .TokenMetadata({
+        IlliniBlockchainSP22Token.TokenMetadataParams memory meta = IlliniBlockchainSP22Token
+            .TokenMetadataParams({
                 year: 2022,
                 termId: 1 // Spring
             });

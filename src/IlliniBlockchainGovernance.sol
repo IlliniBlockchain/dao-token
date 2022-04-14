@@ -1,12 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
+import {GovernorVotes} from "./extensions/GovernorVotes.sol";
+import {GovernorVotesQuorumFraction} from "./extensions/GovernorVotesQuorumFraction.sol";
+import {IVotes} from "./utils/IVotes.sol";
+
 import "@openzeppelin/contracts/governance/Governor.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorSettings.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol";
-import "@openzeppelin/contracts/governance/extensions/GovernorVotes.sol";
-import "@openzeppelin/contracts/governance/extensions/GovernorVotesQuorumFraction.sol";
-import {FxBaseChildTunnel} from "contracts/contracts/tunnel/FxBaseChildTunnel.sol";
 
 contract IlliniBlockchainGovernor is
     Governor,
@@ -15,14 +16,14 @@ contract IlliniBlockchainGovernor is
     GovernorVotes,
     GovernorVotesQuorumFraction
 {
-    constructor(IVotes _token)
+    constructor(IVotes _token, uint256 _tokenID)
         Governor("IlliniBlockchainGovernor")
         GovernorSettings(
             0, /* 0 block */
             45818, /* 1 week */
             0
         )
-        GovernorVotes(_token)
+        GovernorVotes(_token, _tokenID)
         GovernorVotesQuorumFraction(67)
     {}
 
