@@ -1,9 +1,11 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 
-import {GovernorVotes} from "./extensions/GovernorVotes.sol";
-import {GovernorVotesQuorumFraction} from "./extensions/GovernorVotesQuorumFraction.sol";
-import {IVotes} from "./utils/IVotes.sol";
+import "./Governor.sol";
+import "./extensions/GovernorSettings.sol";
+import "./extensions/GovernorCountingSimple.sol";
+import "./extensions/GovernorVotes.sol";
+import "./extensions/GovernorVotesQuorumFraction.sol";
 
 import "@openzeppelin/contracts/governance/Governor.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorSettings.sol";
@@ -26,11 +28,6 @@ contract IlliniBlockchainGovernor is
         GovernorVotes(_token, _tokenID)
         GovernorVotesQuorumFraction(67)
     {}
-
-    /* NOTE:
-    - include variable vote time in proposal
-    - implement voting with our token
-    */
 
     // The following functions are overrides required by Solidity.
 
@@ -76,7 +73,6 @@ contract IlliniBlockchainGovernor is
         override(Governor, GovernorSettings)
         returns (uint256)
     {
-
         return super.proposalThreshold();
     }
 }
