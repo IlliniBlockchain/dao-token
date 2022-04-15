@@ -8,15 +8,21 @@ import {IVotes} from "./utils/IVotes.sol";
 import "@openzeppelin/contracts/governance/Governor.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorSettings.sol";
 import "@openzeppelin/contracts/governance/extensions/GovernorCountingSimple.sol";
+import {FxBaseChildTunnel} from "contract/contracts/tunnel/FxBaseChildTunnel.sol";
 
 contract IlliniBlockchainGovernor is
     Governor,
     GovernorSettings,
     GovernorCountingSimple,
     GovernorVotes,
-    GovernorVotesQuorumFraction
+    GovernorVotesQuorumFraction,
+    FxBaseChildTunnel
 {
-    constructor(IVotes _token, uint256 _tokenID)
+    constructor(
+        IVotes _token,
+        uint256 _tokenID,
+        address _fxChild
+    )
         Governor("IlliniBlockchainGovernor")
         GovernorSettings(
             0, /* 0 block */
@@ -25,6 +31,7 @@ contract IlliniBlockchainGovernor is
         )
         GovernorVotes(_token, _tokenID)
         GovernorVotesQuorumFraction(67)
+        FxBaseChildTunnel(_fxChild)
     {}
 
     /* NOTE:
@@ -83,8 +90,6 @@ contract IlliniBlockchainGovernor is
     address public latestRootMessageSender;
     bytes public latestData;
 
-    constructor(address _fxChild) FxBaseChildTunnel(_fxChild) {}
-
     function _processMessageFromRoot(
         uint256 stateId,
         address sender,
@@ -95,7 +100,7 @@ contract IlliniBlockchainGovernor is
         latestData = data;
     }
 
-    function sendMessageToRoot(bytes memory message) public {
+    function sendMessageToRoot(bytes memory message) public onlyGovernance {
         _sendMessageToRoot(message);
     }
 }
