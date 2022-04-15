@@ -13,7 +13,6 @@ function Wallet({ connected, setConnected, walletAddress, setWalletAddress, setP
         return Boolean(ethereum && ethereum.isMetaMask);
       };
     
-    
       const onClickInstall = () => {
         const onboarding = new MetaMaskOnboarding({ });
         onboarding.startOnboarding();
@@ -24,6 +23,9 @@ function Wallet({ connected, setConnected, walletAddress, setWalletAddress, setP
           setPendingConnect(true);
 
           const providerTemp = new ethers.providers.Web3Provider(window.ethereum);
+          // actual code to connect wallet
+          const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+    
           setProvider(providerTemp);
           const signerTemp = providerTemp.getSigner();
           setSigner(signerTemp);

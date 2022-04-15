@@ -2,7 +2,8 @@ import {useState, useEffect} from 'react';
 import { ChakraProvider, Box, theme, Heading, Button, Text } from '@chakra-ui/react';
 import MetaMaskOnboarding from '@metamask/onboarding'
 import { ethers, utils } from "ethers"
-import Wallet from './Wallet'
+import Wallet from './Wallet';
+import governorContractAbi from './IlliniBlockchainGovernor.json'
 
 function App() {
 
