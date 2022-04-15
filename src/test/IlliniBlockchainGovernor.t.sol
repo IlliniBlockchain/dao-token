@@ -46,4 +46,25 @@ contract IlliniBlockchainGovernorTest is DSTest {
 
         assertEq(amount, gov.getVotes(tokenOwners[0], block.number));
     }
+
+    function test_updateTokenId() public {
+        IlliniBlockchainSP22Token.TokenMetadataParams memory meta = IlliniBlockchainSP22Token
+            .TokenMetadataParams({
+                year: 2022,
+                termId: 1 // Fall
+            });
+
+        vm.startPrank(owner);
+        uint256 newTokenId = token.init(meta);
+        uint256 amount = 1;
+        gov.updateTokenId(newTokenId);
+        token.mint(tokenOwners[0], newTokenId, amount, bytes(""));
+        assertEq(amount, gov.getVotes(tokenOwners[0], block.number));
+    }
+
+    function testFail_updateTokenId() public {
+        // Only governor should be able to update token id
+        vm.startPrank(address(0x123));
+        gov.updateTokenId(123);
+    }
 }
