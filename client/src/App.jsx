@@ -2,7 +2,7 @@ import { ChakraProvider, theme } from '@chakra-ui/react';
 // import MetaMaskOnboarding from '@metamask/onboarding'
 // import { ethers, utils } from "ethers"
 
-import Home from './components/Home';
+import Home from './pages/Home';
 
 function App() {
   return (

@@ -1,14 +1,11 @@
-import { Box, Container, Heading } from '@chakra-ui/react';
-import { Navbar } from './NavBar';
-import ProposalList from './ProposalList';
+import { Box, Container } from '@chakra-ui/react';
+import { Navbar } from '../components/NavBar';
+import ProposalList from '../components/ProposalList';
 
 const Home = () => {
   return (
     <Box>
       <Navbar />
-      <Container minW="100ch" centerContent mb="50px">
-        <Heading size={'2xl'}>Illini Dao</Heading>
-      </Container>
 
       <Container>
         <ProposalList proposals={mockProposalData} />
