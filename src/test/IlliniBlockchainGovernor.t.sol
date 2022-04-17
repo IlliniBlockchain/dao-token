@@ -54,10 +54,14 @@ contract IlliniBlockchainGovernorTest is DSTest {
                 termId: 1 // Fall
             });
 
-        vm.startPrank(owner);
+        vm.prank(owner);
         uint256 newTokenId = token.init(meta);
         uint256 amount = 1;
+
+        vm.prank(address(gov));
         gov.updateTokenId(newTokenId);
+
+        vm.prank(owner);
         token.mint(tokenOwners[0], newTokenId, amount, bytes(""));
         assertEq(amount, gov.getVotes(tokenOwners[0], block.number));
     }

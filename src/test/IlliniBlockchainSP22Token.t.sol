@@ -235,7 +235,7 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
         IlliniBlockchainSP22Token.TokenMetadataParams memory meta = IlliniBlockchainSP22Token
             .TokenMetadataParams({
                 year: 2022,
-                termId: 1 // Fall
+                termId: 0 // Spring
             });
         vm.startPrank(owner);
         token.mint(owner, id, amount, data);
