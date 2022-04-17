@@ -19,7 +19,7 @@ export const Proposal = ({ title, name, description, image }) => {
   const textColor = useColorModeValue('gray.700', 'white');
 
   return (
-    <Card minHeight="290.5px" p="1.2rem">
+    <Card minHeight="290.5px" p="1.2rem" title={title}>
       <Box w="100%">
         <Flex flexDirection="column" w="100%">
           <Flex flexDirection="column" h="100%" lineHeight="1.6">
