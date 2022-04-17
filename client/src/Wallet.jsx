@@ -27,8 +27,9 @@ function Wallet({
   const onClickConnect = async () => {
     try {
       setPendingConnect(true);
-
-      const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
+      await window.ethereum.request({
+        method: 'eth_requestAccounts',
+      });
       const providerTemp = new ethers.providers.Web3Provider(window.ethereum);
       setProvider(providerTemp);
       const signerTemp = providerTemp.getSigner();
@@ -50,10 +51,12 @@ function Wallet({
   return (
     <Box>
       {connected ? (
-        <Text>{walletAddress.slice(0, 10) + '...'}</Text>
+        <Text isTruncated maxWidth="150px" color="black">
+          {walletAddress}
+        </Text>
       ) : (
         <Button
-          variant="outline"
+          variant="solid"
           onClick={metaMaskInstalled ? onClickConnect : onClickInstall}
         >
           {metaMaskInstalled

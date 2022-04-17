@@ -4,9 +4,8 @@ import ProposalList from '../components/ProposalList';
 
 const Home = () => {
   return (
-    <Box>
+    <Box bg="gray.50">
       <Navbar />
-
       <Container>
         <ProposalList proposals={mockProposalData} />
       </Container>
