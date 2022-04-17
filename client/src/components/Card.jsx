@@ -8,6 +8,8 @@ export const Card = ({ children }) => {
       p="22px"
       borderRadius="15px"
       boxShadow="md"
+      transition="all 0.3s"
+      _hover={{ transform: 'translate3D(0,-1px,0) scale(1.03);' }}
     >
       {children}
     </Box>
