@@ -63,8 +63,13 @@ export const FullScreenProposal = () => {
             </Text>
           </GridItem>
           <GridItem rowSpan={2} colSpan={1} />
-          <GridItem rowSpan={2} colSpan={2} maxW="325px">
+          <GridItem
+            rowSpan={2}
+            colSpan={colCount === 'md' || colCount === 'sm' ? 4 : 2}
+            w="100%"
+          >
             <VStack
+              w="100%"
               fontWeight="bold"
               mt={10}
               justify="flex-start"
