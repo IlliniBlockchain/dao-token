@@ -52,6 +52,15 @@ abstract contract Governor is
         bool canceled;
     }
 
+    struct ProposalParams {
+        address[] targets;
+        uint256[] values;
+        bytes[] calldatas;
+        string description;
+        uint64 votingDelay;
+        uint64 votingPeriod;
+    }
+
     string private _name;
 
     mapping(uint256 => ProposalCore) private _proposals;
@@ -289,35 +298,28 @@ abstract contract Governor is
     /**
      * @dev See {IGovernor-propose}.
      */
-    function propose(
-        address[] memory targets,
-        uint256[] memory values,
-        bytes[] memory calldatas,
-        string memory description,
-        uint64 votingDelay,
-        uint64 votingPeriod
-    ) public returns (uint256) {
+    function propose(ProposalParams memory params) public returns (uint256) {
         require(
             getVotes(_msgSender(), block.number - 1) >= proposalThreshold(),
             "Governor: proposer votes below proposal threshold"
         );
 
         uint256 proposalId = hashProposal(
-            targets,
-            values,
-            calldatas,
-            keccak256(bytes(description))
+            params.targets,
+            params.values,
+            params.calldatas,
+            keccak256(bytes(params.description))
         );
 
         require(
-            targets.length == values.length,
+            params.targets.length == params.values.length,
             "Governor: invalid proposal length"
         );
         require(
-            targets.length == calldatas.length,
+            params.targets.length == params.calldatas.length,
             "Governor: invalid proposal length"
         );
-        require(targets.length > 0, "Governor: empty proposal");
+        require(params.targets.length > 0, "Governor: empty proposal");
 
         ProposalCore storage proposal = _proposals[proposalId];
         require(
@@ -325,8 +327,8 @@ abstract contract Governor is
             "Governor: proposal already exists"
         );
 
-        uint64 snapshot = block.number.toUint64() + votingDelay;
-        uint64 deadline = snapshot + votingPeriod;
+        uint64 snapshot = block.number.toUint64() + params.votingDelay;
+        uint64 deadline = snapshot + params.votingPeriod;
 
         proposal.voteStart.setDeadline(snapshot);
         proposal.voteEnd.setDeadline(deadline);
@@ -334,13 +336,13 @@ abstract contract Governor is
         emit ProposalCreated(
             proposalId,
             _msgSender(),
-            targets,
-            values,
-            new string[](targets.length),
-            calldatas,
+            params.targets,
+            params.values,
+            new string[](params.targets.length),
+            params.calldatas,
             snapshot,
             deadline,
-            description
+            params.description
         );
 
         return proposalId;
@@ -357,12 +359,14 @@ abstract contract Governor is
     ) public virtual override returns (uint256) {
         return
             propose(
-                targets,
-                values,
-                calldatas,
-                description,
-                votingDelay().toUint64(),
-                votingPeriod().toUint64()
+                ProposalParams(
+                    targets,
+                    values,
+                    calldatas,
+                    description,
+                    votingDelay().toUint64(),
+                    votingPeriod().toUint64()
+                )
             );
     }
 
