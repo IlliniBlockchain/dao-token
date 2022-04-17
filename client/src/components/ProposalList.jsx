@@ -1,4 +1,12 @@
-import { Box, Button, Heading, HStack, List, ListItem } from '@chakra-ui/react';
+import {
+  Box,
+  Button,
+  Heading,
+  HStack,
+  Link,
+  List,
+  ListItem,
+} from '@chakra-ui/react';
 
 import { AddIcon } from '@chakra-ui/icons';
 import { Proposal } from './Proposal';
@@ -8,7 +16,15 @@ const ProposalList = ({ proposals }) => {
     <Box>
       <HStack justify="space-between" alignContent="center" mb="25px">
         <Heading size="lg">Proposals</Heading>
-        <Button size="sm" variant="outline" mr="-px" rightIcon={<AddIcon />}>
+        <Button
+          as={Link}
+          _hover={{ textDecoration: 'none' }}
+          href="/create-proposal"
+          size="sm"
+          variant="outline"
+          mr="-px"
+          rightIcon={<AddIcon />}
+        >
           Create Proposal
         </Button>
       </HStack>

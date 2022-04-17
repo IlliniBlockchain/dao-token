@@ -1,13 +1,15 @@
 import { ChakraProvider, theme } from '@chakra-ui/react';
-// import MetaMaskOnboarding from '@metamask/onboarding'
-// import { ethers, utils } from "ethers"
-
+import { Route, Routes } from 'react-router-dom';
+import CreateProposal from './pages/CreateProposal';
 import Home from './pages/Home';
 
 function App() {
   return (
     <ChakraProvider theme={theme}>
-      <Home />
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/create-proposal" element={<CreateProposal />} />
+      </Routes>
     </ChakraProvider>
   );
 }
