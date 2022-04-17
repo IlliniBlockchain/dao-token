@@ -12,7 +12,7 @@ import {
 import { Navbar } from '../components/NavBar';
 
 export const FullScreenProposal = () => {
-  const colCount = useBreakpoint({ base: 7, sm: 4, md: 3 });
+  const colCount = useBreakpoint({ base: 7, sm: 4, md: 4 });
   console.log(colCount);
 
   return (
@@ -21,12 +21,14 @@ export const FullScreenProposal = () => {
       <Container minW="90%">
         <Grid
           templateColumns={`repeat(${
-            colCount === 'md' || colCount === 'sm' ? 4 : 7
+            colCount === 'md' || colCount === 'sm' || colCount === 'base'
+              ? 4
+              : 7
           }, 1fr)`}
           h="100vh"
           gap="50px"
         >
-          <GridItem rowSpan={2} colSpan={4}>
+          <GridItem rowSpan={2} colSpan={6}>
             <Heading>Proposal Name</Heading>
 
             <Heading as="h6" size="sm" mt={6}>
@@ -62,11 +64,14 @@ export const FullScreenProposal = () => {
               adipiscing elit.
             </Text>
           </GridItem>
-          <GridItem rowSpan={2} colSpan={1} />
           <GridItem
             rowSpan={2}
-            colSpan={colCount === 'md' || colCount === 'sm' ? 4 : 2}
-            w="100%"
+            colSpan={
+              colCount === 'md' || colCount === 'sm' || colCount === 'base'
+                ? 6
+                : 1
+            }
+            minW="300px"
           >
             <VStack
               w="100%"
@@ -100,24 +105,6 @@ export const FullScreenProposal = () => {
                 <Text>Apr 15, 2022, 8:00 AM</Text>
               </HStack>
             </VStack>
-            {/* <TableContainer>
-              <Table size="sm">
-                <Tbody>
-                  <Tr>
-                    <Td>Author</Td>
-                    <Td>0x123</Td>
-                  </Tr>
-                  <Tr>
-                    <Td>Start Date</Td>
-                    <Td>Apr 8, 2022, 7:36 AM</Td>
-                  </Tr>
-                  <Tr>
-                    <Td>End date</Td>
-                    <Td>Apr 15, 2022, 8:00 AM</Td>
-                  </Tr>
-                </Tbody>
-              </Table>
-            </TableContainer> */}
           </GridItem>
         </Grid>
       </Container>
