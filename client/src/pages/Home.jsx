@@ -6,7 +6,7 @@ const Home = () => {
   return (
     <Box bgColor="gray.50">
       <Navbar />
-      <Container>
+      <Container minW="50%">
         <ProposalList proposals={mockProposalData} />
       </Container>
     </Box>

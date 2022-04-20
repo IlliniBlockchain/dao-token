@@ -20,7 +20,7 @@ export const FullScreenProposal = () => {
   return (
     <Box bg="white">
       <Navbar />
-      <Container minW="80%">
+      <Container minW="80%" pb="100px">
         <Flex flexDir={useSmallerView ? 'column' : 'row'}>
           <Box margin="0 auto" mr={useSmallerView ? '0' : '50px'} maxW="800px">
             <Button
