@@ -1,40 +1,29 @@
 import {
   Box,
   Container,
-  Grid,
-  GridItem,
+  Flex,
   Heading,
   HStack,
+  Progress,
   Text,
-  useBreakpoint,
-  VStack,
+  useMediaQuery,
 } from '@chakra-ui/react';
 import { Navbar } from '../components/NavBar';
 
 export const FullScreenProposal = () => {
-  const colCount = useBreakpoint({ base: 7, sm: 4, md: 4 });
-  console.log(colCount);
+  const [useSmallerView] = useMediaQuery('(max-width: 1200px)');
 
   return (
-    <Box bg="gray.50">
+    <Box bg="white">
       <Navbar />
-      <Container minW="90%">
-        <Grid
-          templateColumns={`repeat(${
-            colCount === 'md' || colCount === 'sm' || colCount === 'base'
-              ? 4
-              : 7
-          }, 1fr)`}
-          h="100vh"
-          gap="50px"
-        >
-          <GridItem rowSpan={2} colSpan={6}>
+      <Container minW="80%">
+        <Flex flexDir={useSmallerView ? 'column' : 'row'}>
+          <Box margin="0 auto" mr={useSmallerView ? '0' : '50px'} maxW="800px">
             <Heading>Proposal Name</Heading>
-
-            <Heading as="h6" size="sm" mt={6}>
+            <Heading size="md" as="h5" mt={6}>
               Description
             </Heading>
-            <Text mt={4}>
+            <Text mt={4} lineHeight="1.75" fontSize="18px">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit.
               Suspendisse elementum auctor porta. Cras consectetur aliquam diam
               eu scelerisque. Nunc ex felis, consectetur a varius et, vehicula
@@ -63,50 +52,49 @@ export const FullScreenProposal = () => {
               pharetra molestie laoreet. Lorem ipsum dolor sit amet, consectetur
               adipiscing elit.
             </Text>
-          </GridItem>
-          <GridItem
-            rowSpan={2}
-            colSpan={
-              colCount === 'md' || colCount === 'sm' || colCount === 'base'
-                ? 6
-                : 1
-            }
-            minW="300px"
+          </Box>
+          <Box
+            minW={useSmallerView ? '100%' : '300px'}
+            maxW={useSmallerView ? '100%' : '315px'}
+            margin="30px auto"
+            h="fit-content"
+            fontWeight="bold"
           >
-            <VStack
-              w="100%"
-              fontWeight="bold"
-              mt={10}
-              justify="flex-start"
-              border="1px solid grey"
-              borderRadius="5px"
-              p={4}
-            >
-              <Heading
-                w="100%"
-                textAlign="center"
-                as="h6"
-                size="md"
-                mb={5}
-                borderBottom="1px solid grey"
-              >
+            <Box border="2px solid grey" borderRadius="5px" p={4} mb={5}>
+              <Heading as="h6" size="md" mb={5}>
                 Information
               </Heading>
-              <HStack w="100%" justify="space-between">
-                <Text>Author</Text>
-                <Text>0x1</Text>
+              <HStack mb="8px" justify="space-between">
+                <Text color="gray.500">Author</Text>
+                <Text noOfLines="1">0x12345678901234567890</Text>
               </HStack>
-              <HStack w="100%" justify="space-between">
-                <Text w="100%">Start Date</Text>
+              <HStack mb="8px" justify="space-between">
+                <Text color="gray.500">Start Date</Text>
                 <Text>Apr 8, 2022, 7:36 AM</Text>
               </HStack>
-              <HStack w="100%" justify="space-between">
-                <Text w="100%">End Date</Text>
+              <HStack mb="8px" justify="space-between">
+                <Text color="gray.500">End Date</Text>
                 <Text>Apr 15, 2022, 8:00 AM</Text>
               </HStack>
-            </VStack>
-          </GridItem>
-        </Grid>
+            </Box>
+            <Box border="2px solid grey" borderRadius="5px" p={4}>
+              <Heading as="h6" size="md" mb={5}>
+                Results
+              </Heading>
+              <HStack mb="8px" justify="space-between">
+                <Text>Yes</Text>
+                <Text>80%</Text>
+              </HStack>
+              <Progress value={80} colorScheme="green" borderRadius="5px" />
+
+              <HStack mb="8px" justify="space-between">
+                <Text>No</Text>
+                <Text>20%</Text>
+              </HStack>
+              <Progress value={20} colorScheme="red" borderRadius="5px" />
+            </Box>
+          </Box>
+        </Flex>
       </Container>
     </Box>
   );
