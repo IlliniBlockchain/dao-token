@@ -57,6 +57,7 @@ function Wallet({
       ) : (
         <Button
           variant="solid"
+          colorScheme="blue"
           onClick={metaMaskInstalled ? onClickConnect : onClickInstall}
         >
           {metaMaskInstalled

@@ -1,13 +1,17 @@
 import {
   Box,
+  Button,
   Container,
   Flex,
   Heading,
   HStack,
+  Icon,
+  Link,
   Progress,
   Text,
   useMediaQuery,
 } from '@chakra-ui/react';
+import { BsArrowLeft } from 'react-icons/bs';
 import { Navbar } from '../components/NavBar';
 
 export const FullScreenProposal = () => {
@@ -19,6 +23,33 @@ export const FullScreenProposal = () => {
       <Container minW="80%">
         <Flex flexDir={useSmallerView ? 'column' : 'row'}>
           <Box margin="0 auto" mr={useSmallerView ? '0' : '50px'} maxW="800px">
+            <Button
+              as={Link}
+              href="/"
+              _hover={{ textDecoration: 'none' }}
+              p="0px"
+              variant="no-hover"
+              bg="transparent"
+            >
+              <Icon
+                as={BsArrowLeft}
+                w="20px"
+                h="20px"
+                fontSize="2xl"
+                transition="all .5s ease"
+                cursor="pointer"
+                pt="4px"
+              />
+              <Text
+                fontSize="sm"
+                color={'gray.700'}
+                fontWeight="bold"
+                cursor="pointer"
+                ml="5px"
+              >
+                Back
+              </Text>
+            </Button>
             <Heading>Proposal Name</Heading>
             <Heading size="md" as="h5" mt={6}>
               Description
