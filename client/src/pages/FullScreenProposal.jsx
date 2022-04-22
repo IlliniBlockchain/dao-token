@@ -31,10 +31,11 @@ export const FullScreenProposal = () => {
   const [pressedOptionA, setPressedOptionA] = useState(false);
   const [pressedOptionB, setPressedOptionB] = useState(false);
 
-  const sendVote = async (proposalId, support, option) => {
+  const sendVote = async (support, option) => {
     setVotePending(true);
     option === 'A' ? setPressedOptionA(true) : setPressedOptionB(true);
-
+    const url = window.location.href;
+    const id = url.split('/')[4];
     try {
       const governorContract = new ethers.Contract(
         governorAddress,
@@ -42,10 +43,7 @@ export const FullScreenProposal = () => {
         provider
       );
       const contractWithSigner = governorContract.connect(signer);
-      const tx = await contractWithSigner.castVote(
-        '60884200414378236127785285185053811369384422552673398324665752021960087288477',
-        support
-      );
+      const tx = await contractWithSigner.castVote(id, support);
       await tx.wait();
 
       toast({
@@ -158,7 +156,7 @@ export const FullScreenProposal = () => {
                   <Button
                     w="100%"
                     onClick={() => {
-                      sendVote(0, 0, 'A');
+                      sendVote(0, 'A');
                     }}
                     isLoading={pressedOptionA}
                     disabled={votePending}
@@ -170,7 +168,7 @@ export const FullScreenProposal = () => {
                     <Button
                       w="100%"
                       onClick={() => {
-                        sendVote(0, 0, 'A');
+                        sendVote(0, 'A');
                       }}
                       isLoading={pressedOptionA}
                       disabled
