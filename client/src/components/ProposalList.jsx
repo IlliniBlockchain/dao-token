@@ -31,7 +31,6 @@ const ProposalList = ({ proposals }) => {
       <List w="100%">
         {proposals && proposals.map(proposal => (
           <ListItem  key={proposal.args[0]} mb="20px">
-            {console.log(proposal)}
             <Proposal
               title={proposal.args[0]._hex}
               name={proposal.args[8]}
