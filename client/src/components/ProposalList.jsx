@@ -29,12 +29,13 @@ const ProposalList = ({ proposals }) => {
         </Button>
       </HStack>
       <List w="100%">
-        {proposals.map(proposal => (
-          <ListItem key={`${proposal.from}${proposal.name}`} mb="20px">
+        {proposals && proposals.map(proposal => (
+          <ListItem  key={proposal.args[0]} mb="20px">
+            {console.log(proposal)}
             <Proposal
-              title={proposal.from}
-              name={proposal.name}
-              description={proposal.description}
+              title={proposal.args[0]._hex}
+              name={proposal.args[8]}
+              // description={proposal.args[8]}
             />
           </ListItem>
         ))}
