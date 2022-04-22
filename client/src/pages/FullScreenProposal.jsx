@@ -7,7 +7,6 @@ import {
   HStack,
   Icon,
   Link,
-  Progress,
   Text,
   VStack,
   useMediaQuery,
@@ -17,33 +16,59 @@ import { Navbar } from '../components/NavBar';
 import { useState } from 'react';
 import governorAbi from '../IlliniBlockchainGovernor.json';
 import { ethers } from 'ethers';
-import BN from 'bn.js';
+import { useToast } from '@chakra-ui/react';
 
-const governorAddress = "0x6Ee1c790db9439366141a19Cee7fa51A15f2Af39";
+const governorAddress = '0x6Ee1c790db9439366141a19Cee7fa51A15f2Af39';
 
 export const FullScreenProposal = () => {
   const [useSmallerView] = useMediaQuery('(max-width: 1200px)');
-
+  const toast = useToast();
   const [votePending, setVotePending] = useState(false);
-  // const []
-
   const [connected, setConnected] = useState(false);
   const [walletAddress, setWalletAddress] = useState('');
   const [provider, setProvider] = useState(null);
   const [signer, setSigner] = useState(null);
-  
-  const sendVote = async (proposalId, support) => {
+  const [pressedOptionA, setPressedOptionA] = useState(false);
+  const [pressedOptionB, setPressedOptionB] = useState(false);
 
-    console.log(proposalId, support);
-
-    const governorContract = new ethers.Contract(governorAddress, governorAbi, provider);
-    const contractWithSigner = governorContract.connect(signer);
-    const tx = await contractWithSigner.castVote("60884200414378236127785285185053811369384422552673398324665752021960087288477", support);
+  const sendVote = async (proposalId, support, option) => {
     setVotePending(true);
-    await tx.wait();
+    option === 'A' ? setPressedOptionA(true) : setPressedOptionB(true);
+
+    try {
+      const governorContract = new ethers.Contract(
+        governorAddress,
+        governorAbi,
+        provider
+      );
+      const contractWithSigner = governorContract.connect(signer);
+      const tx = await contractWithSigner.castVote(
+        '60884200414378236127785285185053811369384422552673398324665752021960087288477',
+        support
+      );
+      await tx.wait();
+
+      toast({
+        title: 'Successfully casted vote',
+        status: 'success',
+        duration: 5000,
+        position: 'top',
+        isClosable: true,
+      });
+    } catch {
+      toast({
+        title: 'Error casting vote',
+        description: 'You may have already voted on this proposal.',
+        status: 'error',
+        duration: 5000,
+        position: 'top',
+        isClosable: true,
+      });
+    }
+    setPressedOptionA(false);
+    setPressedOptionB(false);
     setVotePending(false);
-    
-  }
+  };
 
   return (
     <Box bg="white">
@@ -126,15 +151,23 @@ export const FullScreenProposal = () => {
               <VStack w="100%">
                 <Button
                   w="100%"
-                  onClick={() => {sendVote(0, 0)}}
+                  onClick={() => {
+                    sendVote(0, 0, 'A');
+                  }}
+                  isLoading={pressedOptionA}
+                  disabled={votePending}
                 >
                   Option A
                 </Button>
                 <Button
                   w="100%"
-                  onClick={() => {sendVote(0, 0)}}
+                  isLoading={pressedOptionB}
+                  disabled={votePending}
+                  onClick={() => {
+                    sendVote(0, 0, 'B');
+                  }}
                 >
-                  Option B 
+                  Option B
                 </Button>
               </VStack>
             </Box>

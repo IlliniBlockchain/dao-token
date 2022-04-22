@@ -1,10 +1,17 @@
 import { Box, Container, HStack, Icon, Link } from '@chakra-ui/react';
-import { useState } from 'react';
 import * as React from 'react';
 import Wallet from '../Wallet';
 import { ReactComponent as IlliniBlockchainLogoDark } from '../assets/IlliniBlockchainLogoDark.svg';
-export const Navbar = ({ connected, setConnected, walletAddress, setWalletAddress, provider, setProvider, signer, setSigner}) => {
-
+export const Navbar = ({
+  connected,
+  setConnected,
+  walletAddress,
+  setWalletAddress,
+  provider,
+  setProvider,
+  signer,
+  setSigner,
+}) => {
   return (
     <Box
       as="section"
