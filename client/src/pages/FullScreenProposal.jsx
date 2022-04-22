@@ -152,56 +152,26 @@ export const FullScreenProposal = () => {
                 </Tooltip>
               </Heading>
               <VStack w="100%">
-                {connected ? (
-                  <Button
-                    w="100%"
-                    onClick={() => {
-                      sendVote(0, 'A');
-                    }}
-                    isLoading={pressedOptionA}
-                    disabled={votePending}
-                  >
-                    Option A
-                  </Button>
-                ) : (
-                  <Tooltip hasArrow label="Search places">
-                    <Button
-                      w="100%"
-                      onClick={() => {
-                        sendVote(0, 'A');
-                      }}
-                      isLoading={pressedOptionA}
-                      disabled
-                    >
-                      Option A
-                    </Button>
-                  </Tooltip>
-                )}
-                {connected ? (
-                  <Button
-                    w="100%"
-                    isLoading={pressedOptionB}
-                    disabled={votePending || !connected}
-                    onClick={() => {
-                      sendVote(0, 0, 'B');
-                    }}
-                  >
-                    Option B
-                  </Button>
-                ) : (
-                  <Tooltip hasArrow label="Search places">
-                    <Button
-                      w="100%"
-                      isLoading={pressedOptionB}
-                      disabled
-                      onClick={() => {
-                        sendVote(0, 0, 'B');
-                      }}
-                    >
-                      Option B
-                    </Button>
-                  </Tooltip>
-                )}
+                <Button
+                  w="100%"
+                  onClick={() => {
+                    sendVote(0, 'A');
+                  }}
+                  isLoading={pressedOptionA}
+                  disabled={votePending || !connected}
+                >
+                  Option A
+                </Button>
+                <Button
+                  w="100%"
+                  isLoading={pressedOptionB}
+                  disabled={votePending || !connected}
+                  onClick={() => {
+                    sendVote(1, 'B');
+                  }}
+                >
+                  Option B
+                </Button>
               </VStack>
             </Box>
           </Box>
