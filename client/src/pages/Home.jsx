@@ -1,8 +1,26 @@
 import { Box, Container } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
 import { Navbar } from '../components/NavBar';
 import ProposalList from '../components/ProposalList';
+import { getEvents } from '../utils/api';
+
+// import web3 from 'web3';
 
 const Home = () => {
+
+  const [ events, setEvents] = useState();
+
+  useEffect(() => {
+    async function getProposals() {
+      const data = await getEvents("0x6ee1c790db9439366141a19cee7fa51a15f2af39", "0x7d84a6263ae0d98d3329bd7b46bb4e8d6f98cd35a7adb45c274c8b7fd5ebd5e0");
+      setEvents(data)
+    }
+    getProposals()
+    // const test = web3.eth.abi.decodeParameters(["uint256", "address", "address[]", "uint256[]", "string[]", "bytes[]", "uint256", "uint256", "string"],
+                                // events[0])
+    console.log(test)
+  }, [])
+
   return (
     <Box bgColor="gray.50">
       <Navbar />

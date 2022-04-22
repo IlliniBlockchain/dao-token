@@ -21,10 +21,12 @@ instance.interceptors.request.use(
 );
 
 // Get events from etherscan
-export const getEvents = address => {
+export const getEvents = (address, topic) => {
+
+  console.log(`https://api-rinkeby.etherscan.io/api?module=logs&action=getLogs&fromBlock=0&toBlock=latest&address=${address}&apikey=${process.env.REACT_APP_ETHERSCAN_API_KEY}&topic0=${topic}`)
   return instance
     .get(
-      `https://api.etherscan.io/api?module=logs&action=getLogs&fromBlock=0&toBlock=latest&address=${address}&apikey=${process.env.REACT_APP_ETHERSCAN_API_KEY}`
+      `https://api-rinkeby.etherscan.io/api?module=logs&action=getLogs&fromBlock=0&toBlock=latest&address=${address}&apikey=${process.env.REACT_APP_ETHERSCAN_API_KEY}&topic0=${topic}`
     )
     .then(response => {
       return response.data.result;
