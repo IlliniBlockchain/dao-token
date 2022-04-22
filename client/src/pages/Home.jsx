@@ -14,7 +14,7 @@ const Home = () => {
 
   useEffect(() => {
     async function getProposals() {
-      const provider = ethers.getDefaultProvider('rinkeby'); 
+      const provider = new ethers.providers.AlchemyProvider("matic", process.env.REACT_APP_POLYGON); 
       const contract = new ethers.Contract(
         contractAddress,
         governorAbi,
@@ -31,7 +31,7 @@ const Home = () => {
     }, [])
 
   return (
-    <Box bgColor="whtie">
+    <Box bgColor="white">
       <Navbar />
       <Container minW="50%">
         <ProposalList proposals={events} />
