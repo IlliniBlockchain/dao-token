@@ -1,11 +1,13 @@
 import {
   Box,
   Button,
+  Center,
   Heading,
   HStack,
   Link,
   List,
   ListItem,
+  Spinner,
 } from '@chakra-ui/react';
 
 import { AddIcon } from '@chakra-ui/icons';
@@ -28,17 +30,19 @@ const ProposalList = ({ proposals }) => {
           Create Proposal
         </Button>
       </HStack>
-      <List w="100%">
-        {proposals.map(proposal => (
-          <ListItem key={`${proposal.from}${proposal.name}`} mb="20px">
-            <Proposal
-              title={proposal.from}
-              name={proposal.name}
-              description={proposal.description}
-            />
-          </ListItem>
-        ))}
-      </List>
+      {proposals ? (
+        <List w="100%">
+          {proposals && proposals.map(proposal => (
+            <ListItem key={proposal.args[0]} mb="20px">
+              <Proposal title={proposal.args[0]._hex} name={proposal.args[8]} />
+            </ListItem>
+          ))}
+        </List>
+      ) : (
+        <Center mt="50px">
+          <Spinner />
+        </Center>
+      )}
     </Box>
   );
 };

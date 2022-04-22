@@ -4,22 +4,81 @@ import {
   Container,
   Flex,
   Heading,
-  HStack,
   Icon,
   Link,
-  Progress,
   Text,
+  VStack,
   useMediaQuery,
+  Tooltip,
 } from '@chakra-ui/react';
 import { BsArrowLeft } from 'react-icons/bs';
 import { Navbar } from '../components/NavBar';
+import { useState } from 'react';
+import governorAbi from '../IlliniBlockchainGovernor.json';
+import { ethers } from 'ethers';
+import { useToast } from '@chakra-ui/react';
+
+const governorAddress = '0x2fbe59f807e728ed6b42e237e724296b542e5ba3';
 
 export const FullScreenProposal = () => {
   const [useSmallerView] = useMediaQuery('(max-width: 1200px)');
+  const toast = useToast();
+  const [votePending, setVotePending] = useState(false);
+  const [connected, setConnected] = useState(false);
+  const [walletAddress, setWalletAddress] = useState('');
+  const [provider, setProvider] = useState(null);
+  const [signer, setSigner] = useState(null);
+  const [pressedOptionA, setPressedOptionA] = useState(false);
+  const [pressedOptionB, setPressedOptionB] = useState(false);
+
+  const sendVote = async (support, option) => {
+    setVotePending(true);
+    option === 'A' ? setPressedOptionA(true) : setPressedOptionB(true);
+    const url = window.location.href;
+    const id = url.split('/')[4];
+    try {
+      const governorContract = new ethers.Contract(
+        governorAddress,
+        governorAbi,
+        provider
+      );
+      const contractWithSigner = governorContract.connect(signer);
+      const tx = await contractWithSigner.castVote(id, support);
+      await tx.wait();
+
+      toast({
+        title: 'Successfully casted vote',
+        status: 'success',
+        duration: 5000,
+        position: 'top',
+        isClosable: true,
+      });
+    } catch {
+      toast({
+        title: 'Error casting vote',
+        description:
+          'Make sure your wallet is connected and you have not already voted on this proposal.',
+        status: 'error',
+        duration: 7000,
+        position: 'top',
+        isClosable: true,
+      });
+    }
+    setPressedOptionA(false);
+    setPressedOptionB(false);
+    setVotePending(false);
+  };
 
   return (
     <Box bg="white">
-      <Navbar />
+      <Navbar
+        connected={connected}
+        setConnected={setConnected}
+        walletAddress={walletAddress}
+        setWalletAddress={setWalletAddress}
+        setProvider={setProvider}
+        setSigner={setSigner}
+      />
       <Container minW="80%" pb="100px">
         <Flex flexDir={useSmallerView ? 'column' : 'row'}>
           <Box margin="0 auto" mr={useSmallerView ? '0' : '50px'} maxW="800px">
@@ -50,38 +109,15 @@ export const FullScreenProposal = () => {
                 Back
               </Text>
             </Button>
-            <Heading>Proposal Name</Heading>
+            <Heading>Minority Game</Heading>
             <Heading size="md" as="h5" mt={6}>
               Description
             </Heading>
             <Text mt={4} lineHeight="1.75" fontSize="18px">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              Suspendisse elementum auctor porta. Cras consectetur aliquam diam
-              eu scelerisque. Nunc ex felis, consectetur a varius et, vehicula
-              id dui. Vivamus mollis libero et felis rutrum porta. Integer
-              hendrerit lacus turpis, eget porttitor ipsum imperdiet vitae.
-              Quisque ut tortor eget nulla maximus interdum a eu leo. Nam quis
-              rutrum neque, in suscipit augue. Vivamus eu arcu quis odio dictum
-              varius vel nec neque. Nullam nec velit nulla. Donec sed turpis et
-              lectus suscipit fringilla. Ut sed purus quis sem sagittis euismod
-              eget egestas est. In imperdiet pretium ex, a semper tortor ornare
-              a. Morbi volutpat feugiat luctus. Praesent vestibulum mattis nisl
-              eget pharetra. Vestibulum ante ipsum primis in faucibus orci
-              luctus et ultrices posuere cubilia curae; Phasellus ut auctor
-              ligula, id sagittis enim. In facilisis nibh sit amet pulvinar
-              ultricies. Integer ultricies nunc id tellus eleifend, sed egestas
-              erat ultricies. Maecenas laoreet sem in sem tempus, ut
-              pellentesque neque tempor. Aenean ac odio dignissim, ultricies
-              orci vulputate, pretium sapien. Sed consequat elementum libero eu
-              gravida. In eu finibus mi. Curabitur et interdum justo. Etiam
-              luctus ex diam, nec molestie purus dictum a. Proin at malesuada
-              ipsum, id luctus purus. Nam vulputate volutpat justo sit amet
-              semper. Duis non metus convallis, dignissim urna nec, condimentum
-              turpis. Nullam faucibus orci eleifend tortor cursus, vitae
-              eleifend lacus pretium. Etiam nibh est, ultrices nec maximus ac,
-              dapibus at quam. Morbi vel luctus tellus. Proin sollicitudin elit
-              pharetra molestie laoreet. Lorem ipsum dolor sit amet, consectetur
-              adipiscing elit.
+              The minority game is a game where the minority vote wins the game.
+              If Option B has fewer votes than Option A, then Option B Voters
+              get equal splits of the prize. The prize pool $50, so get your
+              votes in!
             </Text>
           </Box>
           <Box
@@ -91,7 +127,7 @@ export const FullScreenProposal = () => {
             h="fit-content"
             fontWeight="bold"
           >
-            <Box border="2px solid grey" borderRadius="5px" p={4} mb={5}>
+            {/* <Box border="2px solid grey" borderRadius="5px" p={4} mb={5}>
               <Heading as="h6" size="md" mb={5}>
                 Information
               </Heading>
@@ -107,22 +143,36 @@ export const FullScreenProposal = () => {
                 <Text color="gray.500">End Date</Text>
                 <Text>Apr 15, 2022, 8:00 AM</Text>
               </HStack>
-            </Box>
+            </Box> */}
             <Box border="2px solid grey" borderRadius="5px" p={4}>
               <Heading as="h6" size="md" mb={5}>
-                Results
+                Cast your vote
+                <Tooltip label="Make sure your wallet is connected and you have not already voted on this proposal.">
+                  <Icon ml="10px" />
+                </Tooltip>
               </Heading>
-              <HStack mb="8px" justify="space-between">
-                <Text>Yes</Text>
-                <Text>80%</Text>
-              </HStack>
-              <Progress value={80} colorScheme="green" borderRadius="5px" />
-
-              <HStack mb="8px" justify="space-between">
-                <Text>No</Text>
-                <Text>20%</Text>
-              </HStack>
-              <Progress value={20} colorScheme="red" borderRadius="5px" />
+              <VStack w="100%">
+                <Button
+                  w="100%"
+                  onClick={() => {
+                    sendVote(0, 'A');
+                  }}
+                  isLoading={pressedOptionA}
+                  disabled={votePending || !connected}
+                >
+                  Option A
+                </Button>
+                <Button
+                  w="100%"
+                  isLoading={pressedOptionB}
+                  disabled={votePending || !connected}
+                  onClick={() => {
+                    sendVote(1, 'B');
+                  }}
+                >
+                  Option B
+                </Button>
+              </VStack>
             </Box>
           </Box>
         </Flex>
