@@ -9,7 +9,7 @@ import governorAbi from '../IlliniBlockchainGovernor.json';
 
 
 const Home = () => {
-  const contractAddress = "0x6ee1c790db9439366141a19cee7fa51a15f2af39"
+  const contractAddress = "0x2fbe59f807e728ed6b42e237e724296b542e5ba3"
   const [events, setEvents] = useState();
 
   useEffect(() => {

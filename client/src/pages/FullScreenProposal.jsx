@@ -18,7 +18,7 @@ import governorAbi from '../IlliniBlockchainGovernor.json';
 import { ethers } from 'ethers';
 import { useToast } from '@chakra-ui/react';
 
-const governorAddress = '0x6Ee1c790db9439366141a19Cee7fa51A15f2Af39';
+const governorAddress = '0x2fbe59f807e728ed6b42e237e724296b542e5ba3';
 
 export const FullScreenProposal = () => {
   const [useSmallerView] = useMediaQuery('(max-width: 1200px)');
