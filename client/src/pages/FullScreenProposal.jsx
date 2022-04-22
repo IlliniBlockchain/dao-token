@@ -9,17 +9,52 @@ import {
   Link,
   Progress,
   Text,
+  VStack,
   useMediaQuery,
 } from '@chakra-ui/react';
 import { BsArrowLeft } from 'react-icons/bs';
 import { Navbar } from '../components/NavBar';
+import { useState } from 'react';
+import governorAbi from '../IlliniBlockchainGovernor.json';
+import { ethers } from 'ethers';
+import BN from 'bn.js';
+
+const governorAddress = "0x6Ee1c790db9439366141a19Cee7fa51A15f2Af39";
 
 export const FullScreenProposal = () => {
   const [useSmallerView] = useMediaQuery('(max-width: 1200px)');
 
+  const [votePending, setVotePending] = useState(false);
+  // const []
+
+  const [connected, setConnected] = useState(false);
+  const [walletAddress, setWalletAddress] = useState('');
+  const [provider, setProvider] = useState(null);
+  const [signer, setSigner] = useState(null);
+  
+  const sendVote = async (proposalId, support) => {
+
+    console.log(proposalId, support);
+
+    const governorContract = new ethers.Contract(governorAddress, governorAbi, provider);
+    const contractWithSigner = governorContract.connect(signer);
+    const tx = await contractWithSigner.castVote("60884200414378236127785285185053811369384422552673398324665752021960087288477", support);
+    setVotePending(true);
+    await tx.wait();
+    setVotePending(false);
+    
+  }
+
   return (
     <Box bg="white">
-      <Navbar />
+      <Navbar
+        connected={connected}
+        setConnected={setConnected}
+        walletAddress={walletAddress}
+        setWalletAddress={setWalletAddress}
+        setProvider={setProvider}
+        setSigner={setSigner}
+      />
       <Container minW="80%" pb="100px">
         <Flex flexDir={useSmallerView ? 'column' : 'row'}>
           <Box margin="0 auto" mr={useSmallerView ? '0' : '50px'} maxW="800px">
@@ -110,19 +145,22 @@ export const FullScreenProposal = () => {
             </Box>
             <Box border="2px solid grey" borderRadius="5px" p={4}>
               <Heading as="h6" size="md" mb={5}>
-                Results
+                Cast your vote
               </Heading>
-              <HStack mb="8px" justify="space-between">
-                <Text>Yes</Text>
-                <Text>80%</Text>
-              </HStack>
-              <Progress value={80} colorScheme="green" borderRadius="5px" />
-
-              <HStack mb="8px" justify="space-between">
-                <Text>No</Text>
-                <Text>20%</Text>
-              </HStack>
-              <Progress value={20} colorScheme="red" borderRadius="5px" />
+              <VStack w="100%">
+                <Button
+                  w="100%"
+                  onClick={() => {sendVote(0, 0)}}
+                >
+                  Option A
+                </Button>
+                <Button
+                  w="100%"
+                  onClick={() => {sendVote(0, 0)}}
+                >
+                  Option B 
+                </Button>
+              </VStack>
             </Box>
           </Box>
         </Flex>

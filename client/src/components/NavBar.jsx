@@ -3,11 +3,7 @@ import { useState } from 'react';
 import * as React from 'react';
 import Wallet from '../Wallet';
 import { ReactComponent as IlliniBlockchainLogoDark } from '../assets/IlliniBlockchainLogoDark.svg';
-export const Navbar = () => {
-  const [connected, setConnected] = useState(false);
-  const [walletAddress, setWalletAddress] = useState('');
-  const [provider, setProvider] = useState(null);
-  const [signer, setSigner] = useState(null);
+export const Navbar = ({ connected, setConnected, walletAddress, setWalletAddress, provider, setProvider, signer, setSigner}) => {
 
   return (
     <Box
