@@ -11,6 +11,7 @@ export const Navbar = ({
   setProvider,
   signer,
   setSigner,
+  home,
 }) => {
   return (
     <Box
@@ -28,14 +29,20 @@ export const Navbar = ({
             <Link href="/">
               <Icon as={IlliniBlockchainLogoDark} w="150px" h="50px" />
             </Link>
-            <Wallet
-              connected={connected}
-              setConnected={setConnected}
-              walletAddress={walletAddress}
-              setWalletAddress={setWalletAddress}
-              setProvider={setProvider}
-              setSigner={setSigner}
-            />
+            {
+              home
+              ?
+              <></>
+              :
+              <Wallet
+                connected={connected}
+                setConnected={setConnected}
+                walletAddress={walletAddress}
+                setWalletAddress={setWalletAddress}
+                setProvider={setProvider}
+                setSigner={setSigner}
+              />
+            }
             )
           </HStack>
         </Container>

@@ -32,7 +32,7 @@ const Home = () => {
 
   return (
     <Box bgColor="white">
-      <Navbar />
+      <Navbar home={true}/>
       <Container minW="50%">
         <ProposalList proposals={events} />
       </Container>
