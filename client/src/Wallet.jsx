@@ -51,7 +51,7 @@ function Wallet({
   return (
     <Box>
       {connected ? (
-        <Text isTruncated maxWidth="150px" color="black">
+        <Text isTruncated maxWidth={['150px', '250px', '550px']} color="black">
           {walletAddress}
         </Text>
       ) : (
