@@ -57,9 +57,10 @@ export const FullScreenProposal = () => {
     } catch {
       toast({
         title: 'Error casting vote',
-        description: 'You may have already voted on this proposal.',
+        description:
+          'Make sure your wallet is connected and you have not already voted on this proposal.',
         status: 'error',
-        duration: 5000,
+        duration: 7000,
         position: 'top',
         isClosable: true,
       });
@@ -115,8 +116,9 @@ export const FullScreenProposal = () => {
             </Heading>
             <Text mt={4} lineHeight="1.75" fontSize="18px">
               The minority game is a game where the minority vote wins the game.
-              If Option B has fewer votes than Option A, then Option B Voters get equal splits of
-              the prize. The prize pool $50, so get your votes in!
+              If Option B has fewer votes than Option A, then Option B Voters
+              get equal splits of the prize. The prize pool $50, so get your
+              votes in!
             </Text>
           </Box>
           <Box
