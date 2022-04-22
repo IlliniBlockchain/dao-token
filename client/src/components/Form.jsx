@@ -22,7 +22,7 @@ const Form = () => {
         />
       </FormControl>
 
-      <Button mt="50px" colorScheme="green">
+      <Button mt="50px" colorScheme="green" disabled>
         Submit
       </Button>
     </SimpleGrid>
