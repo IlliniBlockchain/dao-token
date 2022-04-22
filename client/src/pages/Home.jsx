@@ -11,13 +11,10 @@ import governorAbi from '../IlliniBlockchainGovernor.json';
 const Home = () => {
   const contractAddress = "0x6ee1c790db9439366141a19cee7fa51a15f2af39"
   const [events, setEvents] = useState();
-  const provider = ethers.getDefaultProvider('rinkeby')
 
   useEffect(() => {
     async function getProposals() {
-      const provider = ethers.getDefaultProvider('rinkeby', {
-        alchemy: process.env.REACT_APP_ALCHEMY,
-      });
+      const provider = ethers.getDefaultProvider('rinkeby'); 
       const contract = new ethers.Contract(
         contractAddress,
         governorAbi,
@@ -28,7 +25,7 @@ const Home = () => {
       const logs = await contract.queryFilter(filter);
       const parsedLogs = logs.map(log => iface.parseLog(log));
       setEvents(parsedLogs);
-    }
+    } 
     getProposals()
     // eslint-disable-next-line
     }, [])
