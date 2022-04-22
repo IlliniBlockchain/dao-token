@@ -9,6 +9,7 @@ import {
   Text,
   VStack,
   useMediaQuery,
+  Tooltip,
 } from '@chakra-ui/react';
 import { BsArrowLeft } from 'react-icons/bs';
 import { Navbar } from '../components/NavBar';
@@ -57,9 +58,10 @@ export const FullScreenProposal = () => {
     } catch {
       toast({
         title: 'Error casting vote',
-        description: 'You may have already voted on this proposal.',
+        description:
+          'Make sure your wallet is connected and you have not already voted on this proposal.',
         status: 'error',
-        duration: 5000,
+        duration: 7000,
         position: 'top',
         isClosable: true,
       });
@@ -115,8 +117,9 @@ export const FullScreenProposal = () => {
             </Heading>
             <Text mt={4} lineHeight="1.75" fontSize="18px">
               The minority game is a game where the minority vote wins the game.
-              If Option B has fewer votes than Option A, then Option B Voters get equal splits of
-              the prize. The prize pool $50, so get your votes in!
+              If Option B has fewer votes than Option A, then Option B Voters
+              get equal splits of the prize. The prize pool $50, so get your
+              votes in!
             </Text>
           </Box>
           <Box
@@ -146,28 +149,61 @@ export const FullScreenProposal = () => {
             <Box border="2px solid grey" borderRadius="5px" p={4}>
               <Heading as="h6" size="md" mb={5}>
                 Cast your vote
+                <Tooltip label="Make sure your wallet is connected and you have not already voted on this proposal.">
+                  <Icon ml="10px" />
+                </Tooltip>
               </Heading>
               <VStack w="100%">
-                <Button
-                  w="100%"
-                  onClick={() => {
-                    sendVote(0, 0, 'A');
-                  }}
-                  isLoading={pressedOptionA}
-                  disabled={votePending}
-                >
-                  Option A
-                </Button>
-                <Button
-                  w="100%"
-                  isLoading={pressedOptionB}
-                  disabled={votePending}
-                  onClick={() => {
-                    sendVote(0, 0, 'B');
-                  }}
-                >
-                  Option B
-                </Button>
+                {connected ? (
+                  <Button
+                    w="100%"
+                    onClick={() => {
+                      sendVote(0, 0, 'A');
+                    }}
+                    isLoading={pressedOptionA}
+                    disabled={votePending}
+                  >
+                    Option A
+                  </Button>
+                ) : (
+                  <Tooltip hasArrow label="Search places">
+                    <Button
+                      w="100%"
+                      onClick={() => {
+                        sendVote(0, 0, 'A');
+                      }}
+                      isLoading={pressedOptionA}
+                      disabled
+                    >
+                      Option A
+                    </Button>
+                  </Tooltip>
+                )}
+                {connected ? (
+                  <Button
+                    w="100%"
+                    isLoading={pressedOptionB}
+                    disabled={votePending || !connected}
+                    onClick={() => {
+                      sendVote(0, 0, 'B');
+                    }}
+                  >
+                    Option B
+                  </Button>
+                ) : (
+                  <Tooltip hasArrow label="Search places">
+                    <Button
+                      w="100%"
+                      isLoading={pressedOptionB}
+                      disabled
+                      onClick={() => {
+                        sendVote(0, 0, 'B');
+                      }}
+                    >
+                      Option B
+                    </Button>
+                  </Tooltip>
+                )}
               </VStack>
             </Box>
           </Box>

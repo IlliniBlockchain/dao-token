@@ -3,7 +3,7 @@ import { ethers } from 'ethers';
 import { useEffect, useState } from 'react';
 import { Navbar } from '../components/NavBar';
 import ProposalList from '../components/ProposalList';
-import governorAbi from '../IlliniBlockchainGovernor.json'
+import governorAbi from '../IlliniBlockchainGovernor.json';
 
   // import web3 from 'web3';
 
@@ -14,21 +14,27 @@ const Home = () => {
   const provider = ethers.getDefaultProvider('rinkeby')
 
   useEffect(() => {
-    async function getProposals() { 
-
-      const contract = new ethers.Contract(contractAddress, governorAbi, provider)
+    async function getProposals() {
+      const provider = ethers.getDefaultProvider('rinkeby', {
+        alchemy: process.env.REACT_APP_ALCHEMY,
+      });
+      const contract = new ethers.Contract(
+        contractAddress,
+        governorAbi,
+        provider
+      );
       const filter = contract.filters.ProposalCreated();
       const iface = new ethers.utils.Interface(governorAbi);
       const logs = await contract.queryFilter(filter);
-      const parsedLogs = logs.map((log) => iface.parseLog(log));      
-      setEvents(parsedLogs)
+      const parsedLogs = logs.map(log => iface.parseLog(log));
+      setEvents(parsedLogs);
     }
     getProposals()
     // eslint-disable-next-line
     }, [])
 
   return (
-    <Box bgColor="gray.50">
+    <Box bgColor="whtie">
       <Navbar />
       <Container minW="50%">
         <ProposalList proposals={events} />
