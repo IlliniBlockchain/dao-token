@@ -2,9 +2,9 @@
 pragma solidity ^0.8.6;
 
 import "ds-test/test.sol";
-import "./test/Vm.sol";
+import "./Vm.sol";
 
-import "./IlliniBlockchainSP22Token.sol";
+import "../IlliniBlockchainSP22Token.sol";
 
 contract IlliniBlockchainSP22TokenTest is DSTest {
     Vm vm = Vm(HEVM_ADDRESS);
@@ -235,7 +235,7 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
         IlliniBlockchainSP22Token.TokenMetadataParams memory meta = IlliniBlockchainSP22Token
             .TokenMetadataParams({
                 year: 2022,
-                termId: 1 // Spring
+                termId: 0 // Spring
             });
         vm.startPrank(owner);
         token.mint(owner, id, amount, data);
