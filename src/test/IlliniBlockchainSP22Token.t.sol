@@ -2,9 +2,9 @@
 pragma solidity ^0.8.6;
 
 import "ds-test/test.sol";
-import "./test/Vm.sol";
+import "./Vm.sol";
 
-import "./IlliniBlockchainSP22Token.sol";
+import "../IlliniBlockchainSP22Token.sol";
 
 contract IlliniBlockchainSP22TokenTest is DSTest {
     Vm vm = Vm(HEVM_ADDRESS);
@@ -188,8 +188,11 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
                 termId: 1
             });
         vm.startPrank(owner);
-        uint256 id = token.init(meta);
+        address[] memory addrs = new address[](1);
+        addrs[0] = owner;
+        uint256 id = token.init(meta, addrs);
         assertEq(id, tokenId);
+        assertEq(token.balanceOf(owner, tokenId), 1);
     }
 
     function testFail_init_owner() public {
@@ -199,7 +202,9 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
                 termId: 1
             });
         vm.startPrank(address(0x2022));
-        token.init(meta);
+        address[] memory addrs = new address[](1);
+        addrs[0] = owner;
+        token.init(meta, addrs);
     }
 
     function test_mint() public {
@@ -235,7 +240,7 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
         IlliniBlockchainSP22Token.TokenMetadataParams memory meta = IlliniBlockchainSP22Token
             .TokenMetadataParams({
                 year: 2022,
-                termId: 1 // Spring
+                termId: 0 // Spring
             });
         vm.startPrank(owner);
         token.mint(owner, id, amount, data);
