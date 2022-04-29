@@ -188,8 +188,11 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
                 termId: 1
             });
         vm.startPrank(owner);
-        uint256 id = token.init(meta);
+        address[] memory addrs = new address[](1);
+        addrs[0] = owner;
+        uint256 id = token.init(meta, addrs);
         assertEq(id, tokenId);
+        assertEq(token.balanceOf(owner, tokenId), 1);
     }
 
     function testFail_init_owner() public {
@@ -199,7 +202,9 @@ contract IlliniBlockchainSP22TokenTest is DSTest {
                 termId: 1
             });
         vm.startPrank(address(0x2022));
-        token.init(meta);
+        address[] memory addrs = new address[](1);
+        addrs[0] = owner;
+        token.init(meta, addrs);
     }
 
     function test_mint() public {

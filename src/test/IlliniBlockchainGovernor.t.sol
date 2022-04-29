@@ -25,7 +25,7 @@ contract IlliniBlockchainGovernorTest is DSTest {
                 year: 2022,
                 termId: 0 // Spring
             });
-        tokenID = token.init(meta);
+        tokenID = token.init(meta, new address[](0));
         gov = new IlliniBlockchainGovernor(token, tokenID);
 
         for (uint256 i = 0; i < tokenOwners.length; i++) {
@@ -57,7 +57,7 @@ contract IlliniBlockchainGovernorTest is DSTest {
             });
 
         vm.prank(owner);
-        uint256 newTokenId = token.init(meta);
+        uint256 newTokenId = token.init(meta, new address[](0));
         uint256 amount = 1;
 
         vm.prank(address(gov));
