@@ -138,15 +138,18 @@ contract IlliniBlockchainSP22Token is ERC1155, Ownable, ERC1155Votes {
     }
 
     /**
-     * @dev Initializes a new token type from metadata.
+     * @dev Initializes a new token type from metadata and
+     * distributes 1 token to specified owners.
      */
-    function init(TokenMetadataParams calldata _metadata)
-        public
-        onlyOwner
-        returns (uint256 _id)
-    {
+    function init(
+        TokenMetadataParams calldata _metadata,
+        address[] calldata _owners
+    ) public onlyOwner returns (uint256 _id) {
         setTokenMetadata(++nonce, _metadata);
         _id = nonce;
+        for (uint256 i = 0; i < _owners.length; i++) {
+            mint(_owners[i], _id, 1, bytes(""));
+        }
     }
 
     function mint(
