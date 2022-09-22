@@ -114,10 +114,6 @@ export const FullScreenProposal = () => {
               Description
             </Heading>
             <Text mt={4} lineHeight="1.75" fontSize="18px">
-              The minority game is a game where the minority vote wins the game.
-              If Option B has fewer votes than Option A, then Option B Voters
-              get equal splits of the prize. The prize pool $50, so get your
-              votes in!
             </Text>
           </Box>
           <Box
