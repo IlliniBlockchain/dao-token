@@ -109,11 +109,12 @@ export const FullScreenProposal = () => {
                 Back
               </Text>
             </Button>
-            <Heading>Minority Game</Heading>
+            <Heading>Pineapple vs. Pepperoni Pizza</Heading>
             <Heading size="md" as="h5" mt={6}>
               Description
             </Heading>
             <Text mt={4} lineHeight="1.75" fontSize="18px">
+              Choose option A for Pinapple Pizza or option B for Pepperoni Pizza.
             </Text>
           </Box>
           <Box
