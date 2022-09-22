@@ -23,7 +23,7 @@ contract IlliniBlockchainSP22Token is ERC1155, Ownable, ERC1155Votes {
         uint16 termId;
     }
 
-    string[] internal terms;
+    string[2] internal terms;
     mapping(uint256 => TokenMetadata) public tokenMetadata;
     string public name = "IlliniBlockchain";
 
@@ -31,7 +31,7 @@ contract IlliniBlockchainSP22Token is ERC1155, Ownable, ERC1155Votes {
     uint256 public nonce = 0;
 
     constructor() {
-        terms = ["Fall", "Spring"];
+        terms = ["Spring", "Fall"];
     }
 
     function contractURI() public view returns (string memory) {
@@ -138,15 +138,18 @@ contract IlliniBlockchainSP22Token is ERC1155, Ownable, ERC1155Votes {
     }
 
     /**
-     * @dev Initializes a new token type from metadata.
+     * @dev Initializes a new token type from metadata and
+     * distributes 1 token to specified owners.
      */
-    function init(TokenMetadataParams calldata _metadata)
-        public
-        onlyOwner
-        returns (uint256 _id)
-    {
+    function init(
+        TokenMetadataParams calldata _metadata,
+        address[] calldata _owners
+    ) public onlyOwner returns (uint256 _id) {
         setTokenMetadata(++nonce, _metadata);
         _id = nonce;
+        for (uint256 i = 0; i < _owners.length; i++) {
+            mint(_owners[i], _id, 1, bytes(""));
+        }
     }
 
     function mint(

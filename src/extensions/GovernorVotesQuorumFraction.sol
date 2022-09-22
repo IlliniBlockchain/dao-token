@@ -3,7 +3,7 @@
 
 pragma solidity ^0.8.0;
 
-import {GovernorVotes} from "./GovernorVotes.sol";
+import "./GovernorVotes.sol";
 
 /**
  * @dev Extension of {Governor} for voting weight extraction from an {ERC20Votes} token and a quorum expressed as a
