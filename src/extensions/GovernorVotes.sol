@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: MIT
-// Modification of OpenZeppelin Contracts (last updated v4.5.0) (governance/extensions/GovernorVotes.sol)
+// OpenZeppelin Contracts (last updated v4.5.0) (governance/extensions/GovernorVotes.sol)
 
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/governance/Governor.sol";
-import {IVotes} from "../utils/IVotes.sol";
+import "../Governor.sol";
+import "../utils/IVotes.sol";
 
 /**
  * @dev Extension of {Governor} for voting weight extraction from an {ERC20Votes} token, or since v4.5 an {ERC721Votes} token.

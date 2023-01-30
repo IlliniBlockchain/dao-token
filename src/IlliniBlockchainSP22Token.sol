@@ -23,7 +23,7 @@ contract IlliniBlockchainSP22Token is ERC1155, Ownable, ERC1155Votes {
         uint16 termId;
     }
 
-    string[] internal terms;
+    string[2] internal terms;
     mapping(uint256 => TokenMetadata) public tokenMetadata;
     string public name = "IlliniBlockchain";
 
@@ -31,7 +31,7 @@ contract IlliniBlockchainSP22Token is ERC1155, Ownable, ERC1155Votes {
     uint256 public nonce = 0;
 
     constructor() {
-        terms = ["Fall", "Spring"];
+        terms = ["Spring", "Fall"];
     }
 
     function contractURI() public view returns (string memory) {
